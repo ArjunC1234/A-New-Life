@@ -14,6 +14,10 @@ config/name="Melon Jam 2023"
 config/features=PackedStringArray("4.2", "Mobile")
 config/icon="res://icon.svg"
 
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/camera_2d_plus/plugin.cfg", "res://addons/trail_2d/plugin.cfg")
+
 [rendering]
 
 renderer/rendering_method="mobile"
