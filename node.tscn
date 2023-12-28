@@ -2,13 +2,14 @@
 
 [ext_resource type="Texture2D" uid="uid://63up5473yc5r" path="res://assets2/prototypeTilemap.png" id="2_aar54"]
 [ext_resource type="PackedScene" uid="uid://0hxv70u0huao" path="res://rigid_body_2d.tscn" id="2_bfdx0"]
-[ext_resource type="Texture2D" uid="uid://c7gg3a5q1twtg" path="res://assets2/cursed_clay_tilemapV3.png" id="2_r5rps"]
+[ext_resource type="Texture2D" uid="uid://cn56vyifupbyt" path="res://assets2/cursed_clay_tilemapV4.png" id="2_y3hlr"]
 [ext_resource type="PackedScene" uid="uid://dbwqtyex2dwx7" path="res://character_body_2d.tscn" id="3_ewoaa"]
 [ext_resource type="Script" path="res://addons/camera_2d_plus/objects/camera_2d_plus/camera_2d_plus_script.gd" id="4_ukyy6"]
-[ext_resource type="PackedScene" uid="uid://bo1wdhtnybu7g" path="res://coin.tscn" id="6_y6s0e"]
-[ext_resource type="PackedScene" uid="uid://dk7tut60ncuri" path="res://dash_refresh.tscn" id="7_cale8"]
+[ext_resource type="PackedScene" path="res://coin.tscn" id="6_y6s0e"]
+[ext_resource type="PackedScene" path="res://dash_refresh.tscn" id="7_cale8"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_pqdfh"]
+resource_name = "Tile"
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_vr3ak"]
 texture = ExtResource("2_aar54")
@@ -210,7 +211,7 @@ texture = ExtResource("2_aar54")
 5:8/0/physics_layer_0/polygon_0/points = PackedVector2Array(8, -8, -8, 0.125, -8, -8, 8, -8)
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_6sunb"]
-texture = ExtResource("2_r5rps")
+texture = ExtResource("2_y3hlr")
 0:0/0 = 0
 0:0/0/physics_layer_0/linear_velocity = Vector2(0, 0)
 0:0/0/physics_layer_0/angular_velocity = 0.0
@@ -892,7 +893,7 @@ position = Vector2(522, 36)
 mass = 19.55
 
 [node name="CharacterBody2D" parent="." instance=ExtResource("3_ewoaa")]
-position = Vector2(183, 336)
+position = Vector2(141, 381)
 scale = Vector2(3, 3)
 
 [node name="Camera2DPlus" type="Camera2D" parent="CharacterBody2D"]

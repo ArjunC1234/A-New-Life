@@ -2,7 +2,7 @@ extends CharacterBody2D
 @onready var sprite_2d = $Sprite2D
 @onready var jSusTimer = $JumpSustainTimer
 @onready var dashTimer = $dashingTimer
-
+@onready var wallJumpTimer = $wallJumpTimer
 
 const SPEED = 300.0
 const JUMP_VELOCITY = -400.0
@@ -11,12 +11,14 @@ var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
 
 var jSusBaseVelocityIncrease = 40
 var jSusTimerFinished = false
+var wall_jump_pushback = 300
 
 var coinsCounter = 0
 
 var doGravity = true
 var allowJump = true
 var allowMove = true
+var isJump = false
 
 func _physics_process(delta):
 	# Add the gravity.
@@ -31,13 +33,22 @@ func _physics_process(delta):
 	
 	# Get the input direction and handle the movement/deceleration.
 	# As good practice, you should replace UI actions with custom gameplay actions.
-	if allowMove == true:
+	if allowMove:
 		var direction = Input.get_axis("left", "right")
 		if direction:
-			velocity.x = direction * SPEED
+			if is_on_floor():
+				velocity.x = direction * SPEED
+			else:
+				velocity.x += direction * (SPEED/25)
+				if (abs(velocity.x)>SPEED):
+					if velocity.x < 0:
+						velocity.x = -SPEED
+					else:
+						velocity.x = SPEED
 		else:
-			velocity.x = move_toward(velocity.x, 0, SPEED)
-	
+			velocity.x = move_toward(velocity.x, 0, 50)
+			
+
 	
 	
 	move_and_slide()
@@ -57,7 +68,22 @@ func jump():
 		
 		#How Long Jump Sustain Lasts (Time is on slider)
 		jSusTimer.start()
-		
+	if (Input.is_action_pressed("right") or Input.is_action_pressed("left")) and not is_on_floor() and is_on_wall():
+		if velocity.y >= 90:
+			velocity.y = 90
+		if Input.is_action_just_pressed("up"):
+			velocity.y = JUMP_VELOCITY
+			jSusTimer.stop()
+			jSusTimerFinished = false
+			freezeCharacter()
+			wallJumpTimer.start()
+			#How Long Jump Sustain Lasts (Time is on slider)
+			jSusTimer.start()
+			if Input.is_action_pressed("right"):
+				velocity.x = -1 * wall_jump_pushback
+			if Input.is_action_pressed("left"):
+				velocity.x = wall_jump_pushback
+				
 	if Input.is_action_just_released("up") and not jSusTimerFinished:
 		jSusTimer.stop()
 		jSusTimerFinished = true
@@ -126,3 +152,7 @@ func _on_dash_timer_timeout():
 	
 func refreshDash():
 	canDash = true
+
+
+func _on_wall_jump_timer_timeout():
+	unfreezeCharacter()

@@ -51,5 +51,10 @@ one_shot = true
 wait_time = 0.2
 one_shot = true
 
+[node name="wallJumpTimer" type="Timer" parent="."]
+wait_time = 0.2
+one_shot = true
+
 [connection signal="timeout" from="JumpSustainTimer" to="." method="_on_jump_sustain_timer_timeout"]
 [connection signal="timeout" from="dashingTimer" to="." method="_on_dash_timer_timeout"]
+[connection signal="timeout" from="wallJumpTimer" to="." method="_on_wall_jump_timer_timeout"]
