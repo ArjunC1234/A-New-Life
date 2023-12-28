@@ -44,12 +44,9 @@ position = Vector2(0, 2.25)
 shape = SubResource("CapsuleShape2D_xnqmr")
 
 [node name="JumpSustainTimer" type="Timer" parent="."]
-wait_time = 0.4
-one_shot = true
+wait_time = 0.1
 
 [node name="dashingTimer" type="Timer" parent="."]
-wait_time = 0.2
-one_shot = true
 
 [connection signal="timeout" from="JumpSustainTimer" to="." method="_on_jump_sustain_timer_timeout"]
 [connection signal="timeout" from="dashingTimer" to="." method="_on_dash_timer_timeout"]
