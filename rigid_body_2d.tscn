@@ -1,0 +1,27 @@
+[gd_scene load_steps=5 format=3 uid="uid://0hxv70u0huao"]
+
+[ext_resource type="Texture2D" uid="uid://dadpsnmk81un" path="res://assets2/prototypeCircle.png" id="1_4ms7n"]
+[ext_resource type="Script" path="res://rigid_body_2d.gd" id="1_7j80y"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_c3dwb"]
+friction = 0.7
+absorbent = true
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_7jt70"]
+radius = 8.0
+
+[node name="RigidBody2D" type="RigidBody2D"]
+physics_material_override = SubResource("PhysicsMaterial_c3dwb")
+script = ExtResource("1_7j80y")
+SPEED = 200
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture_filter = 1
+scale = Vector2(4, 4)
+texture = ExtResource("1_4ms7n")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+scale = Vector2(4, 4)
+shape = SubResource("CircleShape2D_7jt70")
+one_way_collision_margin = 0.0
+debug_color = Color(0, 0.6, 0.701961, 0.419608)

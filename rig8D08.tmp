@@ -1,0 +1,19 @@
+[gd_scene load_steps=4 format=3 uid="uid://0hxv70u0huao"]
+
+[ext_resource type="Texture2D" uid="uid://dadpsnmk81un" path="res://assets2/prototypeCircle.png" id="1_4ms7n"]
+[ext_resource type="Script" path="res://rigid_body_2d.gd" id="1_7j80y"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_hm570"]
+radius = 8.00694
+
+[node name="RigidBody2D" type="RigidBody2D"]
+script = ExtResource("1_7j80y")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture_filter = 1
+scale = Vector2(4, 4)
+texture = ExtResource("1_4ms7n")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+scale = Vector2(4, 4)
+shape = SubResource("CircleShape2D_hm570")

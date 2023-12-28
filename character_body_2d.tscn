@@ -1,0 +1,24 @@
+[gd_scene load_steps=4 format=3 uid="uid://dbwqtyex2dwx7"]
+
+[ext_resource type="Script" path="res://character_body_2d.gd" id="1_2p0s6"]
+[ext_resource type="Texture2D" uid="uid://ctu5tl7mp6hy1" path="res://assets2/prototypePlayer.png" id="1_x2hil"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_xnqmr"]
+radius = 8.0
+height = 32.0
+
+[node name="CharacterBody2D" type="CharacterBody2D"]
+scale = Vector2(4, 4)
+floor_stop_on_slope = false
+script = ExtResource("1_2p0s6")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_x2hil")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CapsuleShape2D_xnqmr")
+
+[node name="JumpSustainTimer" type="Timer" parent="."]
+wait_time = 0.1
+
+[connection signal="timeout" from="JumpSustainTimer" to="." method="_on_jump_sustain_timer_timeout"]
