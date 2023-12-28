@@ -1,46 +1,128 @@
 extends CharacterBody2D
+@onready var sprite_2d = $Sprite2D
+@onready var jSusTimer = $JumpSustainTimer
+@onready var dashTimer = $dashingTimer
 
 
 const SPEED = 300.0
 const JUMP_VELOCITY = -400.0
 # Get the gravity from the project settings to be synced with RigidBody nodes.
 var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
+
+var jSusBaseVelocityIncrease = 40
 var jSusTimerFinished = false
-@onready var jSusTimer = $JumpSustainTimer
+
+var coinsCounter = 0
+
+var doGravity = true
+var allowJump = true
+var allowMove = true
 
 func _physics_process(delta):
 	# Add the gravity.
-	if not is_on_floor():
-		velocity.y += gravity * delta
+	if doGravity == true:
+		if not is_on_floor():
+			velocity.y += gravity * delta
 
-	# Handle jump.
-	jump()
+	# Signal Jump
+	if allowJump == true:
+		jump()
 
 	
 	# Get the input direction and handle the movement/deceleration.
 	# As good practice, you should replace UI actions with custom gameplay actions.
-	var direction = Input.get_axis("left", "right")
-	if direction:
-		velocity.x = direction * SPEED
-	else:
-		velocity.x = move_toward(velocity.x, 0, SPEED)
+	if allowMove == true:
+		var direction = Input.get_axis("left", "right")
+		if direction:
+			velocity.x = direction * SPEED
+		else:
+			velocity.x = move_toward(velocity.x, 0, SPEED)
 	
 	
 	
 	move_and_slide()
 	
+	dash()
+	
+	
+	
+	#Jump Logic
 func jump():
 	if Input.is_action_just_pressed("up") and is_on_floor():
+		#Initial Boost of the Jump
 		velocity.y = JUMP_VELOCITY
+		
 		jSusTimer.stop()
 		jSusTimerFinished = false
-		jSusTimer.start(0.1)
+		
+		#How Long Jump Sustain Lasts (Time is on slider)
+		jSusTimer.start()
+		
 	if Input.is_action_just_released("up") and not jSusTimerFinished:
 		jSusTimer.stop()
 		jSusTimerFinished = true
+		
 	if Input.is_action_pressed("up") and not jSusTimerFinished:
-		velocity.y *= 1.15
+		#Base Velocity Increase  * Ratio of Time Left vs Total Time to Wait (0-100%)
+		#Effect: Gradually lowers the amount added to velocity based on how long the jump has been held.
+		velocity.y += (-jSusBaseVelocityIncrease * jSusTimer.time_left/jSusTimer.wait_time)
+		#print(-jSusBaseVelocityIncrease * jSusTimer.time_left/jSusTimer.wait_time)
+		#velocity.y *= 1.17
 
 
+#set jump sustain timer to finished after timer is finished.
 func _on_jump_sustain_timer_timeout():
 	jSusTimerFinished = true
+	
+#Collect Coin
+func getCoin():
+	coinsCounter += 1
+	print (coinsCounter)
+	
+#Movements to Allow, Freeze, Whatever
+func freezeCharacter():
+	doGravity = false
+	allowJump = false
+	allowMove = false
+	
+func unfreezeCharacter():
+	doGravity = true
+	allowJump = true
+	allowMove = true
+	
+	
+	
+
+
+#Dash
+var dashDirection = Vector2(1,0)
+var canDash = false
+var dashing = false
+	
+func dash():
+	if is_on_floor():
+		if dashing == false:
+			canDash = true
+		
+	if Input.is_action_pressed("right"):
+		dashDirection = Vector2(1,0)
+		
+	if Input.is_action_pressed("left"):
+		dashDirection = Vector2(-1,0)
+		
+	if Input.is_action_just_pressed("dash"):
+		if canDash == true:
+			canDash = false
+			dashing = true
+			freezeCharacter()
+			#add animation for dashing here
+			velocity = dashDirection.normalized() * 1500
+			dashTimer.start()
+
+func _on_dash_timer_timeout():
+	dashing = false
+	unfreezeCharacter()
+	velocity = dashDirection.normalized() * 100
+	
+func refreshDash():
+	canDash = true
