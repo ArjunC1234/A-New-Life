@@ -15,6 +15,7 @@ shadow_size = 10
 shadow_color = Color(0, 0, 0, 1)
 
 [sub_resource type="SystemFont" id="SystemFont_ydu1p"]
+subpixel_positioning = 0
 
 [sub_resource type="LabelSettings" id="LabelSettings_ljkd6"]
 font = SubResource("SystemFont_ydu1p")
@@ -101,7 +102,6 @@ size_flags_horizontal = 0
 size_flags_vertical = 8
 
 [node name="CharmModal" parent="." instance=ExtResource("2_vtcwb")]
-visible = false
 
 [node name="ColorRect" type="ColorRect" parent="CharmModal"]
 layout_mode = 1
@@ -178,6 +178,15 @@ offset_bottom = -4.0
 grow_horizontal = 0
 grow_vertical = 0
 text = "Click Anywhere to Exit [esc]"
+
+[node name="NewCheckpointModal" parent="." instance=ExtResource("2_vtcwb")]
+visible = false
+
+[node name="CenterContainer" type="CenterContainer" parent="NewCheckpointModal"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+scale = Vector2(25.6144, 14.4)
 
 [connection signal="SendCharmDict" from="Charms/CharmButton" to="." method="_on_charm_button_send_charm_dict"]
 [connection signal="SendCharmDict" from="Charms/CharmButton2" to="." method="_on_charm_button_2_send_charm_dict"]

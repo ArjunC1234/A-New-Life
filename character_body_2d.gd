@@ -3,8 +3,10 @@ extends CharacterBody2D
 @onready var jSusTimer = $JumpSustainTimer
 @onready var dashTimer = $dashingTimer
 @onready var wallJumpTimer = $wallJumpTimer
+@onready var attackTimer = $AttackTimer
 @onready var collisionShape = $CollisionShape2D
 @export var health = 10
+@export var damage = 5
 
 var charms = []
 
@@ -13,6 +15,8 @@ signal rollStarted(pos)
 signal rollEnded
 signal coinChange(coins)
 signal addCharmsToHUD(c)
+signal attackFlip(direction)
+signal attack
 
 const SPEED = 300.0
 const JUMP_VELOCITY = -400.0
@@ -24,7 +28,8 @@ var jSusTimerFinished = false
 var wall_jump_pushback = 200
 
 var coinsCounter = 0
-
+var knownCheckpoints = [{"pos": position, "priority": 0, name: 'The Beginning'}]
+var lastCheckpoint = {"pos": position, "priority": 0, name: 'The Beginning'}
 var doGravity = true
 var allowJump = true
 var allowMove = true
@@ -32,6 +37,8 @@ var isJump = false
 var state = "falling"
 var fallPoint = position.y
 var doJumpSustain = false
+var doWallJump = false
+var attacking = false
 
 func _physics_process(delta):
 	# Add the gravity.
@@ -46,12 +53,14 @@ func _physics_process(delta):
 	
 	# Get the input direction and handle the movement/deceleration.
 	# As good practice, you should replace UI actions with custom gameplay actions.
+	var direction = Input.get_axis("left", "right")
+	if direction < 0:
+		sprite_2d.flip_h = true
+		attackFlip.emit(-1)
+	elif direction > 0:
+		sprite_2d.flip_h = false
+		attackFlip.emit(1)
 	if allowMove:
-		var direction = Input.get_axis("left", "right")
-		if direction < 0:
-			sprite_2d.flip_h = true
-		elif direction > 0:
-			sprite_2d.flip_h = false
 		if direction:
 			if is_on_floor():
 				velocity.x = direction * SPEED
@@ -68,36 +77,42 @@ func _physics_process(delta):
 	
 	if sprite_2d.animation == "land" and not sprite_2d.is_playing() and state == "falling":
 		state = "ground"
-		
+	
+	if Input.is_action_just_pressed("space") and not attacking and attackTimer.is_stopped():
+		attacking = true
+		sprite_2d.animation = "attack"
+		attackTimer.start()
 	move_and_slide()
-	if is_on_floor():
+	if not attacking:
+		if is_on_floor():
+			if state == "jumping":
+				velocity.y = 0
+				state = "falling"
+			if state == "falling":
+				if position.y - fallPoint > 300:
+					sprite_2d.animation = "land"
+					sprite_2d.play()
+				else:
+					state = "ground"
+			if state == "ground":
+				fallPoint = position.y
+				if velocity.x == 0:
+					sprite_2d.animation = "idle"
+					sprite_2d.play()
+				else:
+					sprite_2d.animation = "run"
+					sprite_2d.play()
+		else:
+			if velocity.y > 0:
+				if velocity.y == 90:
+					sprite_2d.animation = "wallSlide"
+				else:
+					sprite_2d.animation = "fall"
+				state = "falling"
 		if state == "jumping":
-			velocity.y = 0
-			state = "falling"
-		if state == "falling":
-			if position.y - fallPoint > 300:
-				sprite_2d.animation = "land"
-				sprite_2d.play()
-			else:
-				state = "ground"
-		if state == "ground":
+			sprite_2d.animation = "jump"
+			state = "jumping"
 			fallPoint = position.y
-			if velocity.x == 0:
-				sprite_2d.animation = "idle"
-				sprite_2d.play()
-			else:
-				sprite_2d.animation = "run"
-				sprite_2d.play()
-	else:
-		if velocity.y > 0:
-			sprite_2d.animation = "fall"
-			state = "falling"
-	if state == "jumping":
-		sprite_2d.animation = "jump"
-		state = "jumping"
-		fallPoint = position.y
-	if get_floor_angle() != 0 and state != "jumping" and is_on_floor():
-		pass
 		
 	
 func checkRoll():
@@ -120,16 +135,18 @@ func jump():
 		jSusTimer.stop()
 		jSusTimerFinished = false
 		state = "jumping"
-		sprite_2d.animation = "jump"
-		sprite_2d.play()
+		if not attacking:
+			sprite_2d.animation = "jump"
+			sprite_2d.play()
 		#How Long Jump Sustain Lasts (Time is on slider)
 		jSusTimer.start()
 	if (Input.is_action_pressed("right") or Input.is_action_pressed("left")) and not is_on_floor() and is_on_wall():
 		if velocity.y >= 90:
 			velocity.y = 90
 		if Input.is_action_just_pressed("up"):
-			sprite_2d.animation = "jump"
-			sprite_2d.play()
+			if not attacking:
+				sprite_2d.animation = "jump"
+				sprite_2d.play()
 			velocity.y = JUMP_VELOCITY/1.5
 			jSusTimer.stop()
 			jSusTimerFinished = false
@@ -164,6 +181,10 @@ func getCoin():
 	coinsCounter += 1
 	coinChange.emit(coinsCounter)
 
+func save_checkpoint(checkpoint):
+	lastCheckpoint = checkpoint
+	knownCheckpoints.append(checkpoint)
+	
 func updateCharms(charm):
 	charms.append(charm)
 	if charm.name == "Charm of Ascension":
@@ -233,3 +254,10 @@ func _on_rigid_body_2d_emit_new_location(pos):
 
 
 
+
+
+func _on_animated_sprite_2d_animation_finished():
+	if sprite_2d.animation == "attack":
+		attacking = false
+		attack.emit()
+		

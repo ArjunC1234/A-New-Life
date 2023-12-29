@@ -1,0 +1,101 @@
+[gd_scene load_steps=13 format=3 uid="uid://kaoydny34kxc"]
+
+[ext_resource type="Texture2D" uid="uid://d2t6tw233ttop" path="res://assets2/other/Checkpoint.png" id="1_gbe5l"]
+[ext_resource type="Script" path="res://checkpoint.gd" id="1_lkx3w"]
+[ext_resource type="PackedScene" uid="uid://ben7qxn610l62" path="res://torch.tscn" id="2_uoreo"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qjmqo"]
+atlas = ExtResource("1_gbe5l")
+region = Rect2(0, 0, 768, 1152)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_s048x"]
+atlas = ExtResource("1_gbe5l")
+region = Rect2(0, 0, 768, 1152)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7l07i"]
+atlas = ExtResource("1_gbe5l")
+region = Rect2(0, 1152, 768, 1152)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_srlsx"]
+atlas = ExtResource("1_gbe5l")
+region = Rect2(0, 2304, 768, 1152)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_nho18"]
+atlas = ExtResource("1_gbe5l")
+region = Rect2(0, 3456, 768, 1152)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0fs5n"]
+atlas = ExtResource("1_gbe5l")
+region = Rect2(0, 4608, 768, 1152)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2qp6n"]
+atlas = ExtResource("1_gbe5l")
+region = Rect2(0, 5760, 768, 1152)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_ofl5m"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qjmqo")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_s048x")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7l07i")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_srlsx")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_nho18")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0fs5n")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_2qp6n")
+}],
+"loop": false,
+"name": &"turnOn",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_86ve0"]
+size = Vector2(18, 15)
+
+[node name="Checkpoint" type="Area2D"]
+collision_mask = 8
+script = ExtResource("1_lkx3w")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+scale = Vector2(0.01, 0.01)
+sprite_frames = SubResource("SpriteFrames_ofl5m")
+animation = &"turnOn"
+autoplay = "default"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -1.5)
+shape = SubResource("RectangleShape2D_86ve0")
+
+[node name="Torch" parent="." instance=ExtResource("2_uoreo")]
+position = Vector2(5, 2)
+scale = Vector2(0.009, 0.009)
+disable_mode = 0
+collidable = false
+lightOn = false
+
+[node name="Torch2" parent="." instance=ExtResource("2_uoreo")]
+position = Vector2(-5, 2)
+scale = Vector2(0.009, 0.009)
+disable_mode = 0
+collidable = false
+lightOn = false
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[connection signal="animation_finished" from="AnimatedSprite2D" to="." method="_on_animated_sprite_2d_animation_finished"]

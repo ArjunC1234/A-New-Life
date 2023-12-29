@@ -1,7 +1,8 @@
-[gd_scene load_steps=7 format=3 uid="uid://br4j1uyi7up8d"]
+[gd_scene load_steps=8 format=3 uid="uid://br4j1uyi7up8d"]
 
 [ext_resource type="Texture2D" uid="uid://dgfgcjo68h83s" path="res://assets2/other/charmImage.png" id="1_om8lv"]
 [ext_resource type="Script" path="res://charm_button.gd" id="2_3smnl"]
+[ext_resource type="Texture2D" uid="uid://bknj0jn7e0gts" path="res://assets2/Picture1.png" id="3_cfbeo"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_y5bsx"]
 bg_color = Color(0.6, 0.6, 0.6, 0)
@@ -15,15 +16,10 @@ bg_color = Color(0.145098, 0.145098, 0.145098, 0.815686)
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_rldnp"]
 
 [node name="CharmButton" type="Button"]
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = -26.0
-offset_top = -14.0
-offset_right = -26.0
-offset_bottom = 186.0
-grow_horizontal = 2
-grow_vertical = 2
+offset_left = -10.0
+offset_top = -15.0
+offset_right = 374.0
+offset_bottom = 753.0
 scale = Vector2(0.0514888, 0.0387305)
 size_flags_horizontal = 4
 theme_override_styles/normal = SubResource("StyleBoxFlat_y5bsx")
@@ -36,5 +32,11 @@ flat = true
 icon_alignment = 1
 script = ExtResource("2_3smnl")
 metadata/_edit_use_anchors_ = true
+
+[node name="PointLight2D" type="PointLight2D" parent="."]
+position = Vector2(194.217, 387.292)
+scale = Vector2(0.432705, 0.776267)
+energy = 0.8
+texture = ExtResource("3_cfbeo")
 
 [connection signal="button_up" from="." to="." method="_on_button_up"]

@@ -1,7 +1,8 @@
-[gd_scene load_steps=5 format=3 uid="uid://cykgf547gj2ln"]
+[gd_scene load_steps=6 format=3 uid="uid://cykgf547gj2ln"]
 
 [ext_resource type="Script" path="res://enemy.gd" id="1_3t4u5"]
 [ext_resource type="Texture2D" uid="uid://ctu5tl7mp6hy1" path="res://assets2/prototypePlayer.png" id="1_ostv4"]
+[ext_resource type="Script" path="res://RayCast2D.gd" id="3_uqpbn"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_v840m"]
 radius = 6.25
@@ -25,10 +26,17 @@ shape = SubResource("CapsuleShape2D_v840m")
 
 [node name="RayCast2D" type="RayCast2D" parent="."]
 position = Vector2(7.75, 0)
-target_position = Vector2(0, 22.5)
+target_position = Vector2(0, 18.5)
+script = ExtResource("3_uqpbn")
 
 [node name="Area2D" type="Area2D" parent="."]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
 rotation = 3.14159
 shape = SubResource("CapsuleShape2D_i1rg8")
+
+[node name="unfreeze" type="Timer" parent="."]
+wait_time = 0.3
+
+[connection signal="flipH" from="." to="RayCast2D" method="_on_enemy_flip_h"]
+[connection signal="timeout" from="unfreeze" to="." method="_on_unfreeze_timeout"]

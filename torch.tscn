@@ -1,8 +1,9 @@
-[gd_scene load_steps=9 format=3 uid="uid://ben7qxn610l62"]
+[gd_scene load_steps=10 format=3 uid="uid://ben7qxn610l62"]
 
 [ext_resource type="Script" path="res://torch.gd" id="1_j5yhp"]
 [ext_resource type="Texture2D" uid="uid://bknj0jn7e0gts" path="res://assets2/Picture1.png" id="1_k6221"]
 [ext_resource type="Texture2D" uid="uid://csxnoffand0ni" path="res://assets2/other/torch (1).png" id="2_ejmhf"]
+[ext_resource type="Texture2D" uid="uid://dk2qswbqfng4u" path="res://assets2/other/torch-1.png.png" id="4_ljytd"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_qtcl3"]
 atlas = ExtResource("2_ejmhf")
@@ -34,6 +35,14 @@ animations = [{
 "loop": true,
 "name": &"default",
 "speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("4_ljytd")
+}],
+"loop": true,
+"name": &"off",
+"speed": 5.0
 }]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_r481i"]
@@ -50,6 +59,7 @@ script = ExtResource("1_j5yhp")
 position = Vector2(0, -104)
 color = Color(1, 0.541176, 0.309804, 1)
 range_layer_min = -100
+range_layer_max = 100
 shadow_enabled = true
 shadow_color = Color(0.133333, 0.0313726, 0.0156863, 0.584314)
 shadow_filter = 2
@@ -60,7 +70,6 @@ texture_scale = 5.78
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_1wmlo")
 autoplay = "default"
-frame_progress = 0.976485
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(-3.8147e-06, 200)
