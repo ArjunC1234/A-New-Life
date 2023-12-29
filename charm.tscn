@@ -177,7 +177,7 @@ self_modulate = Color(0.733333, 0, 0.14902, 1)
 position = Vector2(0, 100)
 sprite_frames = SubResource("SpriteFrames_t6qvy")
 autoplay = "default"
-frame_progress = 0.0652555
+frame_progress = 0.493854
 
 [node name="PointLight2D" type="PointLight2D" parent="."]
 energy = 3.66

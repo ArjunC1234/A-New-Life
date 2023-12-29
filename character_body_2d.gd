@@ -21,7 +21,7 @@ var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
 
 var jSusBaseVelocityIncrease = 40
 var jSusTimerFinished = false
-var wall_jump_pushback = 300
+var wall_jump_pushback = 200
 
 var coinsCounter = 0
 
@@ -31,6 +31,7 @@ var allowMove = true
 var isJump = false
 var state = "falling"
 var fallPoint = position.y
+var doJumpSustain = false
 
 func _physics_process(delta):
 	# Add the gravity.
@@ -62,13 +63,17 @@ func _physics_process(delta):
 					else:
 						velocity.x = SPEED
 		else:
-			velocity.x = move_toward(velocity.x, 0, 50)
+			velocity.x = move_toward(velocity.x, 0, 80)
 	dash()
 	
 	if sprite_2d.animation == "land" and not sprite_2d.is_playing() and state == "falling":
 		state = "ground"
 		
+	move_and_slide()
 	if is_on_floor():
+		if state == "jumping":
+			velocity.y = 0
+			state = "falling"
 		if state == "falling":
 			if position.y - fallPoint > 300:
 				sprite_2d.animation = "land"
@@ -93,7 +98,6 @@ func _physics_process(delta):
 		fallPoint = position.y
 	if get_floor_angle() != 0 and state != "jumping" and is_on_floor():
 		pass
-	move_and_slide()
 		
 	
 func checkRoll():
@@ -126,7 +130,7 @@ func jump():
 		if Input.is_action_just_pressed("up"):
 			sprite_2d.animation = "jump"
 			sprite_2d.play()
-			velocity.y = JUMP_VELOCITY
+			velocity.y = JUMP_VELOCITY/1.5
 			jSusTimer.stop()
 			jSusTimerFinished = false
 			freezeCharacter()
@@ -143,7 +147,7 @@ func jump():
 		jSusTimer.stop()
 		jSusTimerFinished = true
 		
-	if Input.is_action_pressed("up") and not jSusTimerFinished:
+	if Input.is_action_pressed("up") and not jSusTimerFinished and doJumpSustain:
 		#Base Velocity Increase  * Ratio of Time Left vs Total Time to Wait (0-100%)
 		#Effect: Gradually lowers the amount added to velocity based on how long the jump has been held.
 		velocity.y += (-jSusBaseVelocityIncrease * jSusTimer.time_left/jSusTimer.wait_time)
@@ -161,7 +165,9 @@ func getCoin():
 	coinChange.emit(coinsCounter)
 
 func updateCharms(charm):
-	charms.append(charm.name)
+	charms.append(charm)
+	if charm.name == "Charm of Ascension":
+		doJumpSustain = true
 	addCharmsToHUD.emit(charm)
 	
 #Movements to Allow, Freeze, Whatever

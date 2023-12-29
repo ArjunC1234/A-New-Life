@@ -191,7 +191,7 @@ animation = &"jump"
 shape = SubResource("CapsuleShape2D_xnqmr")
 
 [node name="JumpSustainTimer" type="Timer" parent="."]
-wait_time = 0.4
+wait_time = 0.2
 one_shot = true
 
 [node name="dashingTimer" type="Timer" parent="."]
