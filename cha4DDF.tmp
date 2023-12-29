@@ -1,4 +1,4 @@
-[gd_scene load_steps=26 format=3 uid="uid://dbwqtyex2dwx7"]
+[gd_scene load_steps=27 format=3 uid="uid://dbwqtyex2dwx7"]
 
 [ext_resource type="Script" path="res://character_body_2d.gd" id="1_2p0s6"]
 [ext_resource type="Texture2D" uid="uid://d4mjet4kmgkjy" path="res://assets2/player/stone_player_jump__v2 (5).png" id="2_x5f8r"]
@@ -32,6 +32,10 @@ region = Rect2(0, 3072, 768, 768)
 [sub_resource type="AtlasTexture" id="AtlasTexture_i42so"]
 atlas = ExtResource("3_3ogii")
 region = Rect2(0, 3840, 768, 768)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ihytl"]
+atlas = ExtResource("2_x5f8r")
+region = Rect2(0, 768, 768, 768)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_nyjva"]
 atlas = ExtResource("2_x5f8r")
@@ -116,6 +120,12 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
+"texture": SubResource("AtlasTexture_ihytl")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ihytl")
+}, {
+"duration": 1.0,
 "texture": SubResource("AtlasTexture_nyjva")
 }, {
 "duration": 1.0,
@@ -126,7 +136,7 @@ animations = [{
 }],
 "loop": false,
 "name": &"jump",
-"speed": 7.0
+"speed": 11.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -172,15 +182,8 @@ height = 22.5
 
 [node name="CharacterBody2D" type="CharacterBody2D"]
 scale = Vector2(4, 4)
-collision_layer = 6
-collision_mask = 5
-floor_constant_speed = true
-floor_max_angle = 1.39626
-floor_snap_length = 10.0
+floor_stop_on_slope = false
 script = ExtResource("1_2p0s6")
-metadata/charms = {
-"red": false
-}
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 scale = Vector2(0.03, 0.03)

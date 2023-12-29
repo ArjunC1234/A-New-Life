@@ -1,0 +1,198 @@
+[gd_scene load_steps=20 format=3 uid="uid://bdvug3kvks5rl"]
+
+[ext_resource type="Script" path="res://Charm.gd" id="1_6tn6w"]
+[ext_resource type="Texture2D" uid="uid://dhflqssp63e2t" path="res://assets2/other/charmReal.png" id="2_bfwtt"]
+[ext_resource type="Texture2D" uid="uid://bknj0jn7e0gts" path="res://assets2/Picture1.png" id="3_s78xs"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_3obhh"]
+radius = 103.0
+height = 768.0
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_lyl7p"]
+atlas = ExtResource("2_bfwtt")
+region = Rect2(0, 0, 384, 768)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_o21wm"]
+atlas = ExtResource("2_bfwtt")
+region = Rect2(384, 0, 384, 768)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_tvr7f"]
+atlas = ExtResource("2_bfwtt")
+region = Rect2(768, 0, 384, 768)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6g6tx"]
+atlas = ExtResource("2_bfwtt")
+region = Rect2(1152, 0, 384, 768)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qlrw7"]
+atlas = ExtResource("2_bfwtt")
+region = Rect2(1536, 0, 384, 768)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_uo0am"]
+atlas = ExtResource("2_bfwtt")
+region = Rect2(384, 768, 384, 768)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3frme"]
+atlas = ExtResource("2_bfwtt")
+region = Rect2(0, 768, 384, 768)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_j1xd0"]
+atlas = ExtResource("2_bfwtt")
+region = Rect2(768, 768, 384, 768)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_my548"]
+atlas = ExtResource("2_bfwtt")
+region = Rect2(1152, 768, 384, 768)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0snqm"]
+atlas = ExtResource("2_bfwtt")
+region = Rect2(1536, 768, 384, 768)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_37f61"]
+atlas = ExtResource("2_bfwtt")
+region = Rect2(0, 1536, 384, 768)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_t6qvy"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_lyl7p")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_o21wm")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_tvr7f")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_6g6tx")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qlrw7")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_uo0am")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3frme")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_uo0am")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_j1xd0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_my548")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0snqm")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_37f61")
+}],
+"loop": true,
+"name": &"default",
+"speed": 8.0
+}]
+
+[sub_resource type="Animation" id="Animation_71qev"]
+resource_name = "bob"
+length = 1.5
+loop_mode = 2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("CollisionShape2D:position")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(0, 100), Vector2(0, -100)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("AnimatedSprite2D:position")
+tracks/1/interp = 2
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 1.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(0, 100), Vector2(0, -100)]
+}
+
+[sub_resource type="Animation" id="Animation_mbr42"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("CollisionShape2D:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 100)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("AnimatedSprite2D:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 100)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_qsl17"]
+_data = {
+"RESET": SubResource("Animation_mbr42"),
+"bob": SubResource("Animation_71qev")
+}
+
+[node name="Charm" type="Area2D"]
+light_mask = 5
+visibility_layer = 5
+position = Vector2(0, 10.558)
+collision_layer = 5
+collision_mask = 5
+script = ExtResource("1_6tn6w")
+charm_name = "Charm of Ascension"
+charm_description = "The \"Charm of Ascension\" allows its user to jump to much larger heights by HOLDING the JUMP button. It is said to have originated from a special rock who lived long ago."
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 100)
+shape = SubResource("CapsuleShape2D_3obhh")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+self_modulate = Color(0.733333, 0, 0.14902, 1)
+position = Vector2(0, 100)
+sprite_frames = SubResource("SpriteFrames_t6qvy")
+autoplay = "default"
+frame_progress = 0.0652555
+
+[node name="PointLight2D" type="PointLight2D" parent="."]
+energy = 3.66
+range_layer_min = -100
+texture = ExtResource("3_s78xs")
+texture_scale = 3.0
+
+[node name="removeCharmTimer" type="Timer" parent="."]
+wait_time = 0.7
+one_shot = true
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_qsl17")
+}
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[connection signal="timeout" from="removeCharmTimer" to="." method="_on_remove_charm_timer_timeout"]

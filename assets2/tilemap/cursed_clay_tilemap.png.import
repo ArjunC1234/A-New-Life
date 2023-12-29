@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://b3khoknrasa20"
-path="res://.godot/imported/dash_power_up_inactive.png-5cd616462683e6d0b6c310fe30ea3f25.ctex"
+uid="uid://da476wc0hepde"
+path="res://.godot/imported/cursed_clay_tilemap.png-8e7695d69975c3c2b18ff406e7e93b17.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets2/dash_power_up_inactive.png"
-dest_files=["res://.godot/imported/dash_power_up_inactive.png-5cd616462683e6d0b6c310fe30ea3f25.ctex"]
+source_file="res://assets2/tilemap/cursed_clay_tilemap.png"
+dest_files=["res://.godot/imported/cursed_clay_tilemap.png-8e7695d69975c3c2b18ff406e7e93b17.ctex"]
 
 [params]
 

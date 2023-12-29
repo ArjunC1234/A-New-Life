@@ -1,8 +1,18 @@
 extends CharacterBody2D
-@onready var sprite_2d = $Sprite2D
+@onready var sprite_2d = $AnimatedSprite2D
 @onready var jSusTimer = $JumpSustainTimer
 @onready var dashTimer = $dashingTimer
 @onready var wallJumpTimer = $wallJumpTimer
+@onready var collisionShape = $CollisionShape2D
+@export var health = 10
+
+var charms = []
+
+signal updateHealth(h)
+signal rollStarted(pos)
+signal rollEnded
+signal coinChange(coins)
+signal addCharmsToHUD(c)
 
 const SPEED = 300.0
 const JUMP_VELOCITY = -400.0
@@ -19,9 +29,12 @@ var doGravity = true
 var allowJump = true
 var allowMove = true
 var isJump = false
+var state = "falling"
+var fallPoint = position.y
 
 func _physics_process(delta):
 	# Add the gravity.
+	updateHealth.emit(health)
 	if doGravity == true:
 		if not is_on_floor():
 			velocity.y += gravity * delta
@@ -29,12 +42,15 @@ func _physics_process(delta):
 	# Signal Jump
 	if allowJump == true:
 		jump()
-
 	
 	# Get the input direction and handle the movement/deceleration.
 	# As good practice, you should replace UI actions with custom gameplay actions.
 	if allowMove:
 		var direction = Input.get_axis("left", "right")
+		if direction < 0:
+			sprite_2d.flip_h = true
+		elif direction > 0:
+			sprite_2d.flip_h = false
 		if direction:
 			if is_on_floor():
 				velocity.x = direction * SPEED
@@ -47,31 +63,69 @@ func _physics_process(delta):
 						velocity.x = SPEED
 		else:
 			velocity.x = move_toward(velocity.x, 0, 50)
-			
-
-	
-	
-	move_and_slide()
-	
 	dash()
 	
+	if sprite_2d.animation == "land" and not sprite_2d.is_playing() and state == "falling":
+		state = "ground"
+		
+	if is_on_floor():
+		if state == "falling":
+			if position.y - fallPoint > 300:
+				sprite_2d.animation = "land"
+				sprite_2d.play()
+			else:
+				state = "ground"
+		if state == "ground":
+			fallPoint = position.y
+			if velocity.x == 0:
+				sprite_2d.animation = "idle"
+				sprite_2d.play()
+			else:
+				sprite_2d.animation = "run"
+				sprite_2d.play()
+	else:
+		if velocity.y > 0:
+			sprite_2d.animation = "fall"
+			state = "falling"
+	if state == "jumping":
+		sprite_2d.animation = "jump"
+		state = "jumping"
+		fallPoint = position.y
+	if get_floor_angle() != 0 and state != "jumping" and is_on_floor():
+		pass
+	move_and_slide()
+		
 	
-	
+func checkRoll():
+	if Input.is_action_pressed("space"):
+		rollStarted.emit(position)
+		sprite_2d.visible = true
+		collisionShape.disabled = true
+		freezeCharacter()
+		
+	if Input.is_action_just_released("space"):
+		rollEnded.emit()
+		unfreezeCharacter()
+		sprite_2d.visible = true
+		collisionShape.disabled = false
 	#Jump Logic
 func jump():
 	if Input.is_action_just_pressed("up") and is_on_floor():
 		#Initial Boost of the Jump
 		velocity.y = JUMP_VELOCITY
-		
 		jSusTimer.stop()
 		jSusTimerFinished = false
-		
+		state = "jumping"
+		sprite_2d.animation = "jump"
+		sprite_2d.play()
 		#How Long Jump Sustain Lasts (Time is on slider)
 		jSusTimer.start()
 	if (Input.is_action_pressed("right") or Input.is_action_pressed("left")) and not is_on_floor() and is_on_wall():
 		if velocity.y >= 90:
 			velocity.y = 90
 		if Input.is_action_just_pressed("up"):
+			sprite_2d.animation = "jump"
+			sprite_2d.play()
 			velocity.y = JUMP_VELOCITY
 			jSusTimer.stop()
 			jSusTimerFinished = false
@@ -79,6 +133,7 @@ func jump():
 			wallJumpTimer.start()
 			#How Long Jump Sustain Lasts (Time is on slider)
 			jSusTimer.start()
+			state = "jumping"
 			if Input.is_action_pressed("right"):
 				velocity.x = -1 * wall_jump_pushback
 			if Input.is_action_pressed("left"):
@@ -103,7 +158,11 @@ func _on_jump_sustain_timer_timeout():
 #Collect Coin
 func getCoin():
 	coinsCounter += 1
-	print (coinsCounter)
+	coinChange.emit(coinsCounter)
+
+func updateCharms(charm):
+	charms.append(charm.name)
+	addCharmsToHUD.emit(charm)
 	
 #Movements to Allow, Freeze, Whatever
 func freezeCharacter():
@@ -130,6 +189,10 @@ func dash():
 		if dashing == false:
 			canDash = true
 		
+	if is_on_wall() and dashing:
+		dashing = false
+		unfreezeCharacter()
+		velocity = dashDirection.normalized() * 100
 	if Input.is_action_pressed("right"):
 		dashDirection = Vector2(1,0)
 		
@@ -156,3 +219,11 @@ func refreshDash():
 
 func _on_wall_jump_timer_timeout():
 	unfreezeCharacter()
+
+
+func _on_rigid_body_2d_emit_new_location(pos):
+	position = pos
+	print(position)
+
+
+

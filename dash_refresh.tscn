@@ -1,8 +1,8 @@
-[gd_scene load_steps=24 format=3 uid="uid://dk7tut60ncuri"]
+[gd_scene load_steps=24 format=3 uid="uid://c5lqkwv4p34fa"]
 
 [ext_resource type="Script" path="res://dashRefresh.gd" id="1_jepmf"]
-[ext_resource type="Texture2D" uid="uid://b3khoknrasa20" path="res://assets2/dash_power_up_inactive.png" id="2_od8fh"]
-[ext_resource type="Texture2D" uid="uid://ck7o12x3dfxat" path="res://assets2/dash_power_up.png" id="3_3soc8"]
+[ext_resource type="Texture2D" uid="uid://b3khoknrasa20" path="res://assets2/other/dash_power_up_inactive.png" id="2_od8fh"]
+[ext_resource type="Texture2D" uid="uid://ck7o12x3dfxat" path="res://assets2/other/dash_power_up.png" id="3_3soc8"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_2wlvb"]
 radius = 5.09902

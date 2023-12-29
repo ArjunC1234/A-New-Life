@@ -1,11 +1,15 @@
-[gd_scene load_steps=4 format=3 uid="uid://cykgf547gj2ln"]
+[gd_scene load_steps=5 format=3 uid="uid://cykgf547gj2ln"]
 
 [ext_resource type="Script" path="res://enemy.gd" id="1_3t4u5"]
 [ext_resource type="Texture2D" uid="uid://ctu5tl7mp6hy1" path="res://assets2/prototypePlayer.png" id="1_ostv4"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_v840m"]
-radius = 8.0
+radius = 6.25
 height = 32.0
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_i1rg8"]
+radius = 6.25
+height = 22.0
 
 [node name="Enemy" type="CharacterBody2D"]
 scale = Vector2(4, 4)
@@ -20,4 +24,11 @@ texture = ExtResource("1_ostv4")
 shape = SubResource("CapsuleShape2D_v840m")
 
 [node name="RayCast2D" type="RayCast2D" parent="."]
-target_position = Vector2(10.25, 22)
+position = Vector2(7.75, 0)
+target_position = Vector2(0, 22.5)
+
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+rotation = 3.14159
+shape = SubResource("CapsuleShape2D_i1rg8")

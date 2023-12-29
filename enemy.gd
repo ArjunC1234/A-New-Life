@@ -14,16 +14,11 @@ func _ready():
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-	pass
 		# Add the gravity.
 	if not is_on_floor():
 		velocity.y += gravity * delta
 	velocity.x = speed*direction
 	move_and_slide()
-	collisions = []
-	for i in raycast.get_slide_collision_count():
-		var collision = raycast.get_slide_collision(i)
-		collisions.append(collision.get_collider().name)
-	if (is_on_wall() or not $RayCast2D.is_colliding()) and not ("Player" in collisions or "Enemy" in collisions):
+	if (is_on_wall() or not $RayCast2D.is_colliding()) and is_on_floor():
 		direction *= -1
 		scale.x *= -1

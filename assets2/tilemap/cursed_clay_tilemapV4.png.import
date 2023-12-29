@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://63up5473yc5r"
-path="res://.godot/imported/prototypeTilemap.png-0e2d5aaebae8aafb1e7f194bcbc66313.ctex"
+uid="uid://cn56vyifupbyt"
+path="res://.godot/imported/cursed_clay_tilemapV4.png-b6e0f3d5566e4b2bc265a8514f37bf65.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets2/prototypeTilemap.png"
-dest_files=["res://.godot/imported/prototypeTilemap.png-0e2d5aaebae8aafb1e7f194bcbc66313.ctex"]
+source_file="res://assets2/tilemap/cursed_clay_tilemapV4.png"
+dest_files=["res://.godot/imported/cursed_clay_tilemapV4.png-b6e0f3d5566e4b2bc265a8514f37bf65.ctex"]
 
 [params]
 

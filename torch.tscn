@@ -1,0 +1,74 @@
+[gd_scene load_steps=9 format=3 uid="uid://ben7qxn610l62"]
+
+[ext_resource type="Script" path="res://torch.gd" id="1_j5yhp"]
+[ext_resource type="Texture2D" uid="uid://bknj0jn7e0gts" path="res://assets2/Picture1.png" id="1_k6221"]
+[ext_resource type="Texture2D" uid="uid://csxnoffand0ni" path="res://assets2/other/torch (1).png" id="2_ejmhf"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qtcl3"]
+atlas = ExtResource("2_ejmhf")
+region = Rect2(0, 0, 432, 816)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_f73dm"]
+atlas = ExtResource("2_ejmhf")
+region = Rect2(0, 816, 432, 816)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1vdfd"]
+atlas = ExtResource("2_ejmhf")
+region = Rect2(0, 1632, 432, 816)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_1wmlo"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qtcl3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_f73dm")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qtcl3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1vdfd")
+}],
+"loop": true,
+"name": &"default",
+"speed": 10.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_r481i"]
+size = Vector2(90, 400)
+
+[node name="Torch" type="StaticBody2D"]
+scale = Vector2(0.01, 0.01)
+disable_mode = 1
+collision_layer = 3
+collision_mask = 3
+script = ExtResource("1_j5yhp")
+
+[node name="PointLight2D" type="PointLight2D" parent="."]
+position = Vector2(0, -104)
+color = Color(1, 0.541176, 0.309804, 1)
+range_layer_min = -100
+shadow_enabled = true
+shadow_color = Color(0.133333, 0.0313726, 0.0156863, 0.584314)
+shadow_filter = 2
+shadow_filter_smooth = 20.6
+texture = ExtResource("1_k6221")
+texture_scale = 5.78
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_1wmlo")
+autoplay = "default"
+frame_progress = 0.976485
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(-3.8147e-06, 200)
+shape = SubResource("RectangleShape2D_r481i")
+debug_color = Color(0.8, 0.396078, 0.403922, 0.419608)
+
+[node name="FlickerTimer" type="Timer" parent="."]
+one_shot = true
+autostart = true
+
+[connection signal="timeout" from="FlickerTimer" to="." method="_on_flicker_timeout"]

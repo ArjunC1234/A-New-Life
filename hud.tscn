@@ -1,0 +1,187 @@
+[gd_scene load_steps=10 format=3 uid="uid://0h6alq8net7o"]
+
+[ext_resource type="Script" path="res://hud.gd" id="1_8lfse"]
+[ext_resource type="PackedScene" uid="uid://b3g3lhdogugcb" path="res://modal.tscn" id="2_vtcwb"]
+[ext_resource type="Texture2D" uid="uid://dgfgcjo68h83s" path="res://assets2/other/charmImage.png" id="3_vy4c7"]
+[ext_resource type="PackedScene" uid="uid://br4j1uyi7up8d" path="res://charm_button.tscn" id="4_b3mx5"]
+
+[sub_resource type="SystemFont" id="SystemFont_80i4w"]
+subpixel_positioning = 0
+
+[sub_resource type="LabelSettings" id="LabelSettings_ibbwk"]
+font = SubResource("SystemFont_80i4w")
+font_size = 50
+shadow_size = 10
+shadow_color = Color(0, 0, 0, 1)
+
+[sub_resource type="SystemFont" id="SystemFont_ydu1p"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_ljkd6"]
+font = SubResource("SystemFont_ydu1p")
+font_size = 15
+outline_color = Color(0, 0, 0, 1)
+shadow_size = 10
+shadow_color = Color(0, 0, 0, 1)
+shadow_offset = Vector2(2, 2)
+
+[sub_resource type="LabelSettings" id="LabelSettings_euijk"]
+font_size = 10
+
+[node name="HUD" type="CanvasLayer"]
+script = ExtResource("1_8lfse")
+
+[node name="coinLabel" type="Label" parent="."]
+offset_left = 12.0
+offset_top = 12.0
+offset_right = 216.0
+offset_bottom = 81.0
+label_settings = SubResource("LabelSettings_ibbwk")
+
+[node name="Hearts" type="HBoxContainer" parent="."]
+offset_left = 13.0
+offset_top = 84.0
+offset_right = 53.0
+offset_bottom = 124.0
+scale = Vector2(0.2, 0.2)
+
+[node name="h1" type="TextureRect" parent="Hearts"]
+layout_mode = 2
+
+[node name="h2" type="TextureRect" parent="Hearts"]
+layout_mode = 2
+
+[node name="h3" type="TextureRect" parent="Hearts"]
+layout_mode = 2
+
+[node name="h4" type="TextureRect" parent="Hearts"]
+layout_mode = 2
+
+[node name="h5" type="TextureRect" parent="Hearts"]
+layout_mode = 2
+
+[node name="Charms" type="HBoxContainer" parent="."]
+layout_direction = 2
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 8.0
+offset_top = -87.0
+offset_right = 2008.0
+offset_bottom = 689.0
+grow_vertical = 0
+scale = Vector2(0.129851, 0.103088)
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_constants/separation = 20
+metadata/_edit_use_anchors_ = true
+
+[node name="CharmButton" parent="Charms" instance=ExtResource("4_b3mx5")]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 8
+
+[node name="CharmButton2" parent="Charms" instance=ExtResource("4_b3mx5")]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 8
+
+[node name="CharmButton3" parent="Charms" instance=ExtResource("4_b3mx5")]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 8
+
+[node name="CharmButton4" parent="Charms" instance=ExtResource("4_b3mx5")]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 8
+
+[node name="CharmButton5" parent="Charms" instance=ExtResource("4_b3mx5")]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 8
+
+[node name="CharmModal" parent="." instance=ExtResource("2_vtcwb")]
+visible = false
+
+[node name="ColorRect" type="ColorRect" parent="CharmModal"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.894118)
+
+[node name="fadeOut" type="Timer" parent="CharmModal"]
+wait_time = 15.0
+one_shot = true
+
+[node name="TimeoutBar" type="ProgressBar" parent="CharmModal"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -512.5
+offset_right = 512.5
+offset_bottom = 27.0
+grow_horizontal = 2
+tooltip_text = "Modal Timeout Bar"
+value = 100.0
+show_percentage = false
+
+[node name="centerContainer" type="CenterContainer" parent="CharmModal"]
+layout_mode = 1
+offset_right = 300.0
+offset_bottom = 200.0
+scale = Vector2(3.41297, 2.87144)
+
+[node name="Container" type="VBoxContainer" parent="CharmModal/centerContainer"]
+custom_minimum_size = Vector2(300, 200)
+layout_direction = 1
+layout_mode = 2
+alignment = 1
+
+[node name="Name" type="Label" parent="CharmModal/centerContainer/Container"]
+layout_mode = 2
+text = "PlaceHolder"
+label_settings = SubResource("LabelSettings_ljkd6")
+horizontal_alignment = 1
+
+[node name="Description" type="Label" parent="CharmModal/centerContainer/Container"]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+focus_mode = 2
+text = "asfdsafdsafsdafdsafsdafsdaf"
+label_settings = SubResource("LabelSettings_euijk")
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="charmImageRect" type="TextureRect" parent="CharmModal/centerContainer/Container"]
+custom_minimum_size = Vector2(32, 64)
+layout_mode = 2
+size_flags_horizontal = 4
+texture = ExtResource("3_vy4c7")
+expand_mode = 1
+
+[node name="Label" type="Label" parent="CharmModal"]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -215.0
+offset_top = -27.0
+offset_right = -4.0
+offset_bottom = -4.0
+grow_horizontal = 0
+grow_vertical = 0
+text = "Click Anywhere to Exit [esc]"
+
+[connection signal="SendCharmDict" from="Charms/CharmButton" to="." method="_on_charm_button_send_charm_dict"]
+[connection signal="SendCharmDict" from="Charms/CharmButton2" to="." method="_on_charm_button_2_send_charm_dict"]
+[connection signal="SendCharmDict" from="Charms/CharmButton3" to="." method="_on_charm_button_3_send_charm_dict"]
+[connection signal="SendCharmDict" from="Charms/CharmButton4" to="." method="_on_charm_button_4_send_charm_dict"]
+[connection signal="SendCharmDict" from="Charms/CharmButton5" to="." method="_on_charm_button_5_send_charm_dict"]
+[connection signal="timeout" from="CharmModal/fadeOut" to="." method="_on_fade_out_timeout"]

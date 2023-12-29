@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://ck7o12x3dfxat"
-path="res://.godot/imported/dash_power_up.png-9f4550793f1e58b2993f941aca891a16.ctex"
+uid="uid://dhflqssp63e2t"
+path="res://.godot/imported/charmReal.png-e8b900894438ff0623c62215daeb6772.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets2/dash_power_up.png"
-dest_files=["res://.godot/imported/dash_power_up.png-9f4550793f1e58b2993f941aca891a16.ctex"]
+source_file="res://assets2/other/charmReal.png"
+dest_files=["res://.godot/imported/charmReal.png-e8b900894438ff0623c62215daeb6772.ctex"]
 
 [params]
 
