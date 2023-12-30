@@ -283,16 +283,12 @@ shape = SubResource("CapsuleShape2D_xnqmr")
 debug_color = Color(0, 0.6, 0.701961, 0.419608)
 script = ExtResource("7_duvji")
 
-[node name="dashDelay" type="Timer" parent="."]
-wait_time = 1.5
-one_shot = true
-
 [node name="JumpSustainTimer" type="Timer" parent="."]
 wait_time = 0.2
 one_shot = true
 
 [node name="dashingTimer" type="Timer" parent="."]
-wait_time = 0.1
+wait_time = 0.2
 one_shot = true
 
 [node name="wallJumpTimer" type="Timer" parent="."]
@@ -305,11 +301,10 @@ one_shot = true
 
 [node name="unfreeze" type="Timer" parent="."]
 wait_time = 0.2
-one_shot = true
 
 [node name="BaseAttackBox" type="Area2D" parent="."]
-position = Vector2(23, 0)
-scale = Vector2(0.0873486, 0.03)
+position = Vector2(11, 0)
+scale = Vector2(0.03, 0.03)
 collision_layer = 2
 collision_mask = 2
 script = ExtResource("8_qa2mh")

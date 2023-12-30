@@ -1,7 +1,6 @@
-[gd_scene load_steps=11 format=3 uid="uid://0h6alq8net7o"]
+[gd_scene load_steps=10 format=3 uid="uid://0h6alq8net7o"]
 
 [ext_resource type="Script" path="res://hud.gd" id="1_8lfse"]
-[ext_resource type="Texture2D" uid="uid://bijdjksr21n7v" path="res://assets2/other/rock_heart/heart_0.png" id="2_tyifv"]
 [ext_resource type="PackedScene" uid="uid://b3g3lhdogugcb" path="res://modal.tscn" id="2_vtcwb"]
 [ext_resource type="Texture2D" uid="uid://dgfgcjo68h83s" path="res://assets2/other/charmImage.png" id="3_vy4c7"]
 [ext_resource type="PackedScene" uid="uid://br4j1uyi7up8d" path="res://charm_button.tscn" id="4_b3mx5"]
@@ -34,37 +33,32 @@ script = ExtResource("1_8lfse")
 
 [node name="coinLabel" type="Label" parent="."]
 offset_left = 12.0
-offset_top = 59.0
+offset_top = 12.0
 offset_right = 216.0
-offset_bottom = 128.0
+offset_bottom = 81.0
 label_settings = SubResource("LabelSettings_ibbwk")
 
 [node name="Hearts" type="HBoxContainer" parent="."]
-offset_left = 6.0
-offset_top = 6.00001
-offset_right = 1102.0
-offset_bottom = 222.0
+offset_left = 13.0
+offset_top = 84.0
+offset_right = 53.0
+offset_bottom = 124.0
 scale = Vector2(0.2, 0.2)
 
 [node name="h1" type="TextureRect" parent="Hearts"]
 layout_mode = 2
-texture = ExtResource("2_tyifv")
 
 [node name="h2" type="TextureRect" parent="Hearts"]
 layout_mode = 2
-texture = ExtResource("2_tyifv")
 
 [node name="h3" type="TextureRect" parent="Hearts"]
 layout_mode = 2
-texture = ExtResource("2_tyifv")
 
 [node name="h4" type="TextureRect" parent="Hearts"]
 layout_mode = 2
-texture = ExtResource("2_tyifv")
 
 [node name="h5" type="TextureRect" parent="Hearts"]
 layout_mode = 2
-texture = ExtResource("2_tyifv")
 
 [node name="Charms" type="HBoxContainer" parent="."]
 layout_direction = 2
@@ -108,7 +102,6 @@ size_flags_horizontal = 0
 size_flags_vertical = 8
 
 [node name="CharmModal" parent="." instance=ExtResource("2_vtcwb")]
-visible = false
 
 [node name="ColorRect" type="ColorRect" parent="CharmModal"]
 layout_mode = 1
@@ -120,7 +113,7 @@ grow_vertical = 2
 color = Color(0, 0, 0, 0.894118)
 
 [node name="fadeOut" type="Timer" parent="CharmModal"]
-wait_time = 10.0
+wait_time = 15.0
 one_shot = true
 
 [node name="TimeoutBar" type="ProgressBar" parent="CharmModal"]

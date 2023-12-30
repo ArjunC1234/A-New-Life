@@ -1,35 +1,67 @@
-[gd_scene load_steps=6 format=3 uid="uid://cykgf547gj2ln"]
+[gd_scene load_steps=9 format=3 uid="uid://cykgf547gj2ln"]
 
 [ext_resource type="Script" path="res://enemy.gd" id="1_3t4u5"]
-[ext_resource type="Texture2D" uid="uid://ctu5tl7mp6hy1" path="res://assets2/prototypePlayer.png" id="1_ostv4"]
+[ext_resource type="Texture2D" uid="uid://bhsevwef2gjqa" path="res://assets2/other/spike_dude_enemy.png" id="2_mmgcs"]
 [ext_resource type="Script" path="res://RayCast2D.gd" id="3_uqpbn"]
 
-[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_v840m"]
-radius = 6.25
-height = 32.0
+[sub_resource type="AtlasTexture" id="AtlasTexture_nk1d6"]
+atlas = ExtResource("2_mmgcs")
+region = Rect2(0, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_h0ceh"]
+atlas = ExtResource("2_mmgcs")
+region = Rect2(0, 16, 16, 16)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_w7h32"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_nk1d6")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_h0ceh")
+}],
+"loop": true,
+"name": &"default",
+"speed": 3.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_1arkp"]
+size = Vector2(12, 22.449)
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_i1rg8"]
 radius = 6.25
 height = 22.0
 
 [node name="Enemy" type="CharacterBody2D"]
+visibility_layer = 4
 scale = Vector2(4, 4)
 collision_layer = 2
+floor_stop_on_slope = false
+floor_constant_speed = true
+floor_max_angle = 0.663225
 script = ExtResource("1_3t4u5")
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
+[node name="Sprite2D" type="AnimatedSprite2D" parent="."]
 self_modulate = Color(1, 0.294118, 0.890196, 1)
-texture = ExtResource("1_ostv4")
+sprite_frames = SubResource("SpriteFrames_w7h32")
+autoplay = "default"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-shape = SubResource("CapsuleShape2D_v840m")
+position = Vector2(0, 2.25)
+scale = Vector2(1, 0.49)
+shape = SubResource("RectangleShape2D_1arkp")
 
 [node name="RayCast2D" type="RayCast2D" parent="."]
-position = Vector2(7.75, 0)
-target_position = Vector2(0, 18.5)
+position = Vector2(8.5, 6.25)
+scale = Vector2(0.654811, 0.378081)
+target_position = Vector2(0, 10.9894)
 script = ExtResource("3_uqpbn")
 
 [node name="Area2D" type="Area2D" parent="."]
+scale = Vector2(0.764414, 0.536271)
+collision_layer = 16
+collision_mask = 16
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
 rotation = 3.14159
@@ -38,5 +70,10 @@ shape = SubResource("CapsuleShape2D_i1rg8")
 [node name="unfreeze" type="Timer" parent="."]
 wait_time = 0.3
 
+[node name="deathDelay" type="Timer" parent="."]
+wait_time = 0.05
+
 [connection signal="flipH" from="." to="RayCast2D" method="_on_enemy_flip_h"]
+[connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]
 [connection signal="timeout" from="unfreeze" to="." method="_on_unfreeze_timeout"]
+[connection signal="timeout" from="deathDelay" to="." method="_on_death_delay_timeout"]

@@ -5,6 +5,8 @@ extends CharacterBody2D
 @onready var wallJumpTimer = $wallJumpTimer
 @onready var attackTimer = $AttackTimer
 @onready var collisionShape = $CollisionShape2D
+@onready var unfreeze = $unfreeze
+@onready var dashDelay = $dashDelay
 @export var health = 10
 @export var damage = 5
 
@@ -26,7 +28,7 @@ var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
 var jSusBaseVelocityIncrease = 40
 var jSusTimerFinished = false
 var wall_jump_pushback = 200
-
+var knockback = 400
 var coinsCounter = 0
 var knownCheckpoints = [{"pos": position, "priority": 0, name: 'The Beginning'}]
 var lastCheckpoint = {"pos": position, "priority": 0, name: 'The Beginning'}
@@ -212,7 +214,7 @@ var canDash = false
 var dashing = false
 	
 func dash():
-	if is_on_floor():
+	if is_on_floor() and dashDelay.is_stopped():
 		if dashing == false:
 			canDash = true
 		
@@ -220,6 +222,7 @@ func dash():
 		dashing = false
 		unfreezeCharacter()
 		velocity = dashDirection.normalized() * 100
+		
 	if Input.is_action_pressed("right"):
 		dashDirection = Vector2(1,0)
 		
@@ -227,13 +230,16 @@ func dash():
 		dashDirection = Vector2(-1,0)
 		
 	if Input.is_action_just_pressed("dash"):
-		if canDash == true:
+		if canDash == true and not attacking:
 			canDash = false
 			dashing = true
+			dashDelay.start()
 			freezeCharacter()
 			#add animation for dashing here
 			velocity = dashDirection.normalized() * 1500
 			dashTimer.start()
+
+
 
 func _on_dash_timer_timeout():
 	dashing = false
@@ -252,7 +258,16 @@ func _on_rigid_body_2d_emit_new_location(pos):
 	position = pos
 	print(position)
 
-
+func take_damage(amount, vector, attackerNode):
+	if unfreeze.is_stopped() and not dashing:
+		print("player took ddamage")
+		velocity = vector.normalized() * knockback
+		freezeCharacter()
+		unfreeze.start()
+		health -= amount
+		if (health <= 0):
+			position = lastCheckpoint.pos
+			health = 10
 
 
 
@@ -261,3 +276,7 @@ func _on_animated_sprite_2d_animation_finished():
 		attacking = false
 		attack.emit()
 		
+
+
+func _on_unfreeze_timeout():
+	unfreezeCharacter()

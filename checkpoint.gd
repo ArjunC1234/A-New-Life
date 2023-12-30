@@ -3,6 +3,7 @@ extends Area2D
 @onready var torch = $Torch
 @onready var torch2 = $Torch2
 @onready var sprite = $AnimatedSprite2D
+@onready var centerLight = $PointLight2D
 @export var save_priority = 0
 @export var enabled = false
 
@@ -16,7 +17,10 @@ func _ready():
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-	pass
+	if sprite.is_playing() and sprite.animation == "turnOn":
+		centerLight.enabled = true
+	else:
+		centerLight.enabled = false
 
 
 func _on_body_entered(body):

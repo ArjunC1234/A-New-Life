@@ -34,16 +34,21 @@ func _on_character_body_2d_coin_change(coins):
 	coinLabel.text = str(coins)
 
 
-func _on_character_body_2d_update_health(h):
-	var a_hearts = h/2
-	for heart in hearts:
-		a_hearts -= 1
-		if a_hearts >= 0:
-			heart.texture = fullHeart
-		elif a_hearts == -0.5:
-			heart.texture = halfHeart
-		elif a_hearts < -0.5:
-			heart.texture = emptyHeart
+func _on_character_body_2d_update_health(playerHP):
+	for i in range(1, hearts.size()+1, 1):
+		var heart = hearts[i-1]
+		var texture
+
+		# Check if the current index is within the player's HP range
+		if i * 2 <= playerHP:
+			texture = fullHeart
+		elif i * 2 - 1 == playerHP:
+			texture = halfHeart
+		else:
+			texture = emptyHeart
+
+		# Set the texture of the current heart image node
+		heart.texture = texture
 
 
 func _on_character_body_2d_add_charms_to_hud(c):

@@ -6,12 +6,14 @@ signal flipH
 @export var speed = 200
 @export var direction = 1
 @export var health = 10
+@export var damage = 1
 var collisions = []
 var freeze = false
-var knockback = 400
+var knockback = 800
 @onready var raycast = $RayCast2D
 @onready var sprite_2d = $Sprite2D
 @onready var unfreeze = $unfreeze
+@onready var deathDelay = $deathDelay
 
 
 
@@ -34,16 +36,30 @@ func _process(delta):
 		velocity.x = speed*direction
 	move_and_slide()
 		
-func take_damage(amount, vector):
+func take_damage(amount, vector, attackerNode):
 	freeze = true
 	velocity = vector.normalized() * knockback
 	unfreeze.start()
 	health -= amount
 	if (health <= 0):
 		position = Vector2(-1000, -1000)
-		queue_free()
+		if attackerNode.has_method("killEnemy"):
+			attackerNode.killEnemy(name)
+		deathDelay.start()
+		
 	
 
 
 func _on_unfreeze_timeout():
 	freeze = false
+
+
+func _on_death_delay_timeout():
+	queue_free()
+
+
+func _on_area_2d_body_entered(body):
+	print("body detected")
+	if body.has_method("take_damage"):
+		print('player detected')
+		body.take_damage(damage, body.position - position, self)
