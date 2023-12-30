@@ -22,9 +22,13 @@ signal attack
 
 const SPEED = 300.0
 const JUMP_VELOCITY = -400.0
+const dashEchoPath = preload('res://dash_effect.tscn')
 # Get the gravity from the project settings to be synced with RigidBody nodes.
 var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
 
+var echoCounts = 8
+var echoIndex = 1
+var echosSpawned = 0
 var jSusBaseVelocityIncrease = 40
 var jSusTimerFinished = false
 var wall_jump_pushback = 200
@@ -96,35 +100,36 @@ func _physics_process(delta):
 			attackTimer.start()
 		move_and_slide()
 		if not attacking:
-			if is_on_floor():
+			if not dashing:
+				if is_on_floor():
+					if state == "jumping":
+						velocity.y = 0
+						state = "falling"
+					if state == "falling":
+						if position.y - fallPoint > 300:
+							sprite_2d.animation = "land"
+							sprite_2d.play()
+						else:
+							state = "ground"
+					if state == "ground":
+						fallPoint = position.y
+						if velocity.x == 0:
+							sprite_2d.animation = "idle"
+							sprite_2d.play()
+						else:
+							sprite_2d.animation = "run"
+							sprite_2d.play()
+				else:
+					if velocity.y > 0:
+						if velocity.y == 90:
+							sprite_2d.animation = "wallSlide"
+						else:
+							sprite_2d.animation = "fall"
+						state = "falling"
 				if state == "jumping":
-					velocity.y = 0
-					state = "falling"
-				if state == "falling":
-					if position.y - fallPoint > 300:
-						sprite_2d.animation = "land"
-						sprite_2d.play()
-					else:
-						state = "ground"
-				if state == "ground":
+					sprite_2d.animation = "jump"
+					state = "jumping"
 					fallPoint = position.y
-					if velocity.x == 0:
-						sprite_2d.animation = "idle"
-						sprite_2d.play()
-					else:
-						sprite_2d.animation = "run"
-						sprite_2d.play()
-			else:
-				if velocity.y > 0:
-					if velocity.y == 90:
-						sprite_2d.animation = "wallSlide"
-					else:
-						sprite_2d.animation = "fall"
-					state = "falling"
-			if state == "jumping":
-				sprite_2d.animation = "jump"
-				state = "jumping"
-				fallPoint = position.y
 		
 	
 func checkRoll():
@@ -157,8 +162,9 @@ func jump():
 			velocity.y = 90
 		if Input.is_action_just_pressed("up"):
 			if not attacking:
-				sprite_2d.animation = "jump"
-				sprite_2d.play()
+				if not dashing:
+					sprite_2d.animation = "jump"
+					sprite_2d.play()
 			velocity.y = JUMP_VELOCITY/1.5
 			jSusTimer.stop()
 			jSusTimerFinished = false
@@ -218,6 +224,7 @@ func freezeCharacter():
 	doGravity = false
 	allowJump = false
 	allowMove = false
+	velocity = Vector2(0,0)
 	
 func unfreezeCharacter():
 	doGravity = true
@@ -250,15 +257,42 @@ func dash():
 		dashDirection = Vector2(-1,0)
 		
 	if Input.is_action_just_pressed("dash"):
-		if canDash == true and not attacking and allowDash:
+		if canDash == true and not attacking:
+			print("dashing")
+			sprite_2d.animation = "dash"
 			canDash = false
 			dashing = true
-			dashDelay.start()
 			freezeCharacter()
-			#add animation for dashing here
-			velocity = dashDirection.normalized() * 1500
-			dashTimer.start()
+			dashDelay.start()
+			
+			
+	if dashing:
+		create_dash_echos()
+	
+func _on_dash_delay_timeout():
+	pass # Replace with function body.
+	#add animation for dashing here
+	velocity = dashDirection.normalized() * 1500
+	echoIndex = 1
+	dashTimer.start()
+	
 
+func create_dash_echos():
+	#wait_time = timeleft
+	#print("dashTimer wait_time:") 
+	#print(dashTimer.wait_time/3)
+
+	#If Time Passed > Total Time times Echos passed divided by Total Echos
+	if ((dashTimer.wait_time - dashTimer.time_left) >= (echoIndex * dashTimer.wait_time)/echoCounts):
+		print((echoIndex * dashTimer.wait_time)/echoCounts)
+		print("dashTimer time passed:")
+		print(dashTimer.wait_time - dashTimer.time_left)
+		echoIndex += 1
+		print("instantiating echo!")
+		var echo = dashEchoPath.instantiate()
+		get_parent().add_child(echo)
+		echo.position = position
+		echo.flip_h = sprite_2d.flip_h
 
 
 func _on_dash_timer_timeout():
@@ -308,3 +342,5 @@ func _on_dialogue_hud_started_dialogue_sequence():
 func _on_dialogue_hud_finished_dialogue_sequence():
 	frozen = false
 	sprite_2d.play()
+
+
