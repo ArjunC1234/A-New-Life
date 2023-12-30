@@ -9,7 +9,7 @@ signal flipH
 @export var damage = 1
 var collisions = []
 var freeze = false
-var knockback = 800
+var knockback = 500
 @onready var raycast = $RayCast2D
 @onready var sprite_2d = $Sprite2D
 @onready var unfreeze = $unfreeze

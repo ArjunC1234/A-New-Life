@@ -34,8 +34,8 @@ var jSusTimerFinished = false
 var wall_jump_pushback = 200
 var knockback = 400
 var coinsCounter = 0
-var knownCheckpoints = [{"pos": position, "priority": 0, name: 'The Beginning'}]
-var lastCheckpoint = {"pos": position, "priority": 0, name: 'The Beginning'}
+@onready var knownCheckpoints = [{"pos": position, "priority": 0, name: 'The Beginning'}]
+@onready var lastCheckpoint = {"pos": position, "priority": 0, name: 'The Beginning'}
 var doGravity = true
 var allowJump = true
 var allowMove = true
@@ -55,7 +55,6 @@ var allowDash = false
 var attacking = false
 
 func _physics_process(delta):
-
 	# Add the gravity.
 	updateHealth.emit(health)
 	if not frozen:
@@ -95,6 +94,7 @@ func _physics_process(delta):
 			state = "ground"
 		
 		if Input.is_action_just_pressed("space") and not attacking and attackTimer.is_stopped() and allowAttack:
+			print("Hello")
 			attacking = true
 			sprite_2d.animation = "attack"
 			attackTimer.start()
@@ -158,14 +158,12 @@ func jump():
 			sprite_2d.play()
 		#How Long Jump Sustain Lasts (Time is on slider)
 		jSusTimer.start()
-	if (Input.is_action_pressed("right") or Input.is_action_pressed("left")) and not is_on_floor() and is_on_wall() and allowWallJump:
+	if (Input.is_action_pressed("right") or Input.is_action_pressed("left")) and not is_on_floor() and is_on_wall() and allowWallJump and not dashing:
 		if velocity.y >= 90:
 			velocity.y = 90
 		if Input.is_action_just_pressed("up"):
-			if not attacking:
-				if not dashing:
-					sprite_2d.animation = "jump"
-					sprite_2d.play()
+			sprite_2d.animation = "jump"
+			sprite_2d.play()
 			velocity.y = JUMP_VELOCITY/1.5
 			jSusTimer.stop()
 			jSusTimerFinished = false
@@ -187,7 +185,6 @@ func jump():
 		#Base Velocity Increase  * Ratio of Time Left vs Total Time to Wait (0-100%)
 		#Effect: Gradually lowers the amount added to velocity based on how long the jump has been held.
 		velocity.y += (-jSusBaseVelocityIncrease * jSusTimer.time_left/jSusTimer.wait_time)
-		#print(-jSusBaseVelocityIncrease * jSusTimer.time_left/jSusTimer.wait_time)
 		#velocity.y *= 1.17
 
 func isPlayer():
@@ -214,7 +211,7 @@ func updateCharms(charm):
 		unfreezeCharacter()
 	if charm.name == "Charm of Ascension":
 		allowJumpSustain = true
-	if charm.name == "Charm of Attack":
+	if charm.name == "Charm of Bludgeoning":
 		allowAttack = true
 	if charm.name == "Charm of Propulsion":
 		allowWallJump = true
@@ -228,7 +225,6 @@ func freezeCharacter():
 	doGravity = false
 	allowJump = false
 	allowMove = false
-	velocity = Vector2(0,0)
 	
 func unfreezeCharacter():
 	doGravity = true
@@ -284,17 +280,10 @@ func _on_dash_delay_timeout():
 	
 
 func create_dash_echos():
-	#wait_time = timeleft
-	#print("dashTimer wait_time:") 
-	#print(dashTimer.wait_time/3)
 
 	#If Time Passed > Total Time times Echos passed divided by Total Echos
 	if ((dashTimer.wait_time - dashTimer.time_left) >= (echoIndex * dashTimer.wait_time)/echoCounts):
-		print((echoIndex * dashTimer.wait_time)/echoCounts)
-		print("dashTimer time passed:")
-		print(dashTimer.wait_time - dashTimer.time_left)
 		echoIndex += 1
-		print("instantiating echo!")
 		var echo = dashEchoPath.instantiate()
 		get_parent().add_child(echo)
 		echo.position = position
@@ -325,6 +314,7 @@ func take_damage(amount, vector, attackerNode):
 		health -= amount
 		if (health <= 0):
 			position = lastCheckpoint.pos
+			velocity = Vector2(0, 0)
 			health = 10
 
 
