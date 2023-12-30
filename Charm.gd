@@ -15,16 +15,14 @@ extends Area2D
 var entered = false
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	if not include:
-		queue_free()
 	animation.play("bob")
 	add_to_group("charms")
 	if charm_collected == true:
 		var Player = get_node(playerPathIfCharmCollected)
 		entered = true
 		Player.updateCharms({'name' : charm_name, 'color' : charm_color, 'description' : charm_description})
+	if not include or charm_collected:
 		queue_free()
-
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
