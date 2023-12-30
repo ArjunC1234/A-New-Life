@@ -1,0 +1,23 @@
+[gd_scene load_steps=3 format=3 uid="uid://i72v416s203u"]
+
+[ext_resource type="Texture2D" uid="uid://bknj0jn7e0gts" path="res://assets2/Picture1.png" id="1_q4fvo"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_tjdk0"]
+size = Vector2(90, 66)
+
+[node name="NextLevelTeleport" type="Area2D"]
+collision_layer = 3
+collision_mask = 3
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_tjdk0")
+debug_color = Color(0, 0.6, 0.701961, 0.419608)
+
+[node name="PointLight2D" type="PointLight2D" parent="."]
+energy = 17.0
+range_layer_min = -100
+range_layer_max = 100
+shadow_enabled = true
+shadow_color = Color(0.117647, 0.00392157, 0, 0.917647)
+texture = ExtResource("1_q4fvo")
+texture_scale = 0.11

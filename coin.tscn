@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://bo1wdhtnybu7g"]
+[gd_scene load_steps=9 format=3 uid="uid://0v2lspotbsga"]
 
 [ext_resource type="Texture2D" uid="uid://dyollodv86lby" path="res://assets2/collectibles/coin.png" id="1_pg55y"]
 [ext_resource type="Script" path="res://coin.gd" id="1_rtv6c"]
@@ -58,3 +58,4 @@ autoplay = "default"
 frame_progress = 0.711982
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[connection signal="ready" from="." to="." method="_on_ready"]

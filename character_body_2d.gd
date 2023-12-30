@@ -44,7 +44,14 @@ var frozen = false
 var state = "falling"
 var fallPoint = position.y
 var doJumpSustain = false
-var doWallJump = false
+
+#CharmAbilityBooleans
+var allowBallRoll = false
+var allowJumpSustain = false
+var allowAttack = false
+var allowWallJump = false
+var allowDash = false
+
 var attacking = false
 
 func _physics_process(delta):
@@ -87,7 +94,7 @@ func _physics_process(delta):
 		if sprite_2d.animation == "land" and not sprite_2d.is_playing() and state == "falling":
 			state = "ground"
 		
-		if Input.is_action_just_pressed("space") and not attacking and attackTimer.is_stopped():
+		if Input.is_action_just_pressed("space") and not attacking and attackTimer.is_stopped() and allowAttack:
 			attacking = true
 			sprite_2d.animation = "attack"
 			attackTimer.start()
@@ -150,7 +157,7 @@ func jump():
 			sprite_2d.play()
 		#How Long Jump Sustain Lasts (Time is on slider)
 		jSusTimer.start()
-	if (Input.is_action_pressed("right") or Input.is_action_pressed("left")) and not is_on_floor() and is_on_wall():
+	if (Input.is_action_pressed("right") or Input.is_action_pressed("left")) and not is_on_floor() and is_on_wall() and allowWallJump:
 		if velocity.y >= 90:
 			velocity.y = 90
 		if Input.is_action_just_pressed("up"):
@@ -175,7 +182,7 @@ func jump():
 		jSusTimer.stop()
 		jSusTimerFinished = true
 		
-	if Input.is_action_pressed("up") and not jSusTimerFinished and doJumpSustain:
+	if Input.is_action_pressed("up") and not jSusTimerFinished and allowJumpSustain:
 		#Base Velocity Increase  * Ratio of Time Left vs Total Time to Wait (0-100%)
 		#Effect: Gradually lowers the amount added to velocity based on how long the jump has been held.
 		velocity.y += (-jSusBaseVelocityIncrease * jSusTimer.time_left/jSusTimer.wait_time)
@@ -199,8 +206,17 @@ func save_checkpoint(checkpoint):
 	
 func updateCharms(charm):
 	charms.append(charm)
+	if charm.name == "Charm of the Spirit":
+		allowBallRoll = true
 	if charm.name == "Charm of Ascension":
-		doJumpSustain = true
+		allowJumpSustain = true
+	if charm.name == "Charm of Attack":
+		allowAttack = true
+	if charm.name == "Charm of Propulsion":
+		allowWallJump = true
+	if charm.name == "Charm of Evasion":
+		allowDash = true
+		
 	addCharmsToHUD.emit(charm)
 	
 #Movements to Allow, Freeze, Whatever

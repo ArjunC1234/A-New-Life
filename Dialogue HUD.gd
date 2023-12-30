@@ -9,6 +9,8 @@ var currentDialogueA = []
 @onready var message = $Modal/CenterContainer/VBoxContainer/Message
 @onready var changeModalTimer = $changeModal
 @onready var modal = $Modal
+
+@export var doDialogue = true
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	pass # Replace with function body.
@@ -30,11 +32,13 @@ func loadDialogueBlock(dBlock : Dictionary):
 
 
 func triggerDialogue(dialogueArray):
-	currentDialogueA = dialogueArray
-	currentIndex = 0
-	if dialogueArray.size() > 0:
-		startedDialogueSequence.emit()
-		loadDialogueBlock(dialogueArray[currentIndex])
+	if (doDialogue):
+		layer = 3
+		currentDialogueA = dialogueArray
+		currentIndex = 0
+		if dialogueArray.size() > 0:
+			startedDialogueSequence.emit()
+			loadDialogueBlock(dialogueArray[currentIndex])
 		
 		
 func _on_change_modal_timeout():
@@ -49,5 +53,6 @@ func _on_modal_finished_fading_out():
 	currentIndex+=1
 	if currentIndex >= currentDialogueA.size():
 		finishedDialogueSequence.emit()
+		layer = 1
 	else:
 		loadDialogueBlock(currentDialogueA[currentIndex])
