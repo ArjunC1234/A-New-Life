@@ -3524,3 +3524,9 @@ color = Color(0.411765, 0.411765, 0.411765, 1)
 process_priority = 1
 
 [node name="Dialogue HUD" parent="." instance=ExtResource("8_fse7q")]
+
+[connection signal="addCharmsToHUD" from="CharacterBody2D" to="HUD" method="_on_character_body_2d_add_charms_to_hud"]
+[connection signal="coinChange" from="CharacterBody2D" to="HUD" method="_on_character_body_2d_coin_change"]
+[connection signal="updateHealth" from="CharacterBody2D" to="HUD" method="_on_character_body_2d_update_health"]
+[connection signal="finishedDialogueSequence" from="Dialogue HUD" to="CharacterBody2D" method="_on_dialogue_hud_finished_dialogue_sequence"]
+[connection signal="startedDialogueSequence" from="Dialogue HUD" to="CharacterBody2D" method="_on_dialogue_hud_started_dialogue_sequence"]

@@ -1,10 +1,9 @@
-[gd_scene load_steps=43 format=3 uid="uid://dbwqtyex2dwx7"]
+[gd_scene load_steps=41 format=3 uid="uid://dbwqtyex2dwx7"]
 
 [ext_resource type="Script" path="res://character_body_2d.gd" id="1_2p0s6"]
 [ext_resource type="Texture2D" uid="uid://cvxp7t5i3gbqr" path="res://assets2/player/stone_player_attack (1).png" id="2_hjmt1"]
 [ext_resource type="Texture2D" uid="uid://d4mjet4kmgkjy" path="res://assets2/player/stone_player_jump__v2 (5).png" id="2_x5f8r"]
 [ext_resource type="Texture2D" uid="uid://dccjn56vykeo1" path="res://assets2/player/stone_player_idle (1).png" id="3_3ogii"]
-[ext_resource type="Texture2D" uid="uid://ctj34tr6hc220" path="res://assets2/player/stone_player_dash_scaled.png" id="3_d14ti"]
 [ext_resource type="Texture2D" uid="uid://k8465bki1a33" path="res://assets2/player/stone_player_run.png" id="4_h6ia6"]
 [ext_resource type="Texture2D" uid="uid://gr1uwdbnc4ri" path="res://assets2/player/stone_player_walljump.png" id="5_5gvt3"]
 [ext_resource type="Script" path="res://CollisionShape2D.gd" id="7_duvji"]
@@ -45,10 +44,6 @@ region = Rect2(0, 5376, 1152, 768)
 [sub_resource type="AtlasTexture" id="AtlasTexture_favsk"]
 atlas = ExtResource("2_hjmt1")
 region = Rect2(0, 6144, 1152, 768)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_4k1ob"]
-atlas = ExtResource("3_d14ti")
-region = Rect2(768, 768, 768, 768)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_fs2jc"]
 atlas = ExtResource("2_x5f8r")
@@ -166,14 +161,6 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_4k1ob")
-}],
-"loop": true,
-"name": &"dash",
-"speed": 24.0
-}, {
-"frames": [{
-"duration": 1.0,
 "texture": SubResource("AtlasTexture_fs2jc")
 }],
 "loop": true,
@@ -265,7 +252,7 @@ animations = [{
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_xnqmr"]
 radius = 4.5
-height = 19.5
+height = 22.5
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_spnfm"]
 size = Vector2(417, 766.667)
@@ -300,7 +287,7 @@ wait_time = 0.05
 one_shot = true
 
 [node name="JumpSustainTimer" type="Timer" parent="."]
-wait_time = 0.2
+wait_time = 0.3
 one_shot = true
 
 [node name="dashingTimer" type="Timer" parent="."]
