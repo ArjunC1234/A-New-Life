@@ -1,6 +1,6 @@
 extends CanvasLayer
 
-@onready var coinLabel = $coinLabel
+@onready var coinLabel = $HBoxContainer/coinLabel
 @onready var fadeOut = $CharmModal/fadeOut
 @onready var modal = $CharmModal
 @onready var Description = $CharmModal/centerContainer/Container/Description
@@ -9,13 +9,14 @@ extends CanvasLayer
 @onready var TimeOutBar = $CharmModal/TimeoutBar
 @onready var hearts = [$Hearts/h1, $Hearts/h2, $Hearts/h3, $Hearts/h4, $Hearts/h5]
 @onready var charmButtons = $Charms
+@onready var HUDCharmDelay = $HUDCharmDelay
 
 var fullHeart = preload("res://assets2/other/rock_heart/heart_0.png")
 var halfHeart = preload("res://assets2/other/rock_heart/heart_1.png")
 var emptyHeart = preload("res://assets2/other/rock_heart/heart_2.png")
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	coinLabel.text = str(0)
+	coinLabel.text = "x "+ str(0)
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -31,7 +32,7 @@ func _process(delta):
 
 
 func _on_character_body_2d_coin_change(coins):
-	coinLabel.text = str(coins)
+	coinLabel.text = "x "+ str(coins)
 
 
 func _on_character_body_2d_update_health(playerHP):
@@ -52,7 +53,10 @@ func _on_character_body_2d_update_health(playerHP):
 
 
 func _on_character_body_2d_add_charms_to_hud(c):
-	openCharmModal(c)
+	if HUDCharmDelay == null:
+		await get_tree().create_timer(0.1).timeout
+	else:
+		openCharmModal(c)
 	for charmButton in charmButtons.get_children():
 		if charmButton.disabled:
 			charmButton.charmDict = c
@@ -72,6 +76,7 @@ func openCharmModal(charmDict):
 	fadeOut.start()
 
 func _on_charm_button_send_charm_dict(d):
+	print("heiii")
 	openCharmModal(d)
 
 

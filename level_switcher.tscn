@@ -1,0 +1,17 @@
+[gd_scene load_steps=2 format=3 uid="uid://c8wcyr2sibs70"]
+
+[ext_resource type="PackedScene" uid="uid://eqvhnd8qxoyj" path="res://level.tscn" id="1_q4qul"]
+
+[node name="LevelSwitcher" type="Node2D"]
+
+[node name="Level" parent="." instance=ExtResource("1_q4qul")]
+visible = false
+
+[node name="Level2" parent="." instance=ExtResource("1_q4qul")]
+visible = false
+
+[node name="Camera2D" parent="Level2/CharacterBody2D" index="9"]
+position = Vector2(105, 89)
+
+[editable path="Level"]
+[editable path="Level2"]
