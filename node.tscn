@@ -11,6 +11,7 @@ script = ExtResource("1_gql8l")
 [node name="MainMenu" parent="." instance=ExtResource("1_k1mxx")]
 
 [node name="MainMenuBtn" type="CanvasLayer" parent="."]
+layer = 4
 visible = false
 script = ExtResource("3_x1prw")
 
