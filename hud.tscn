@@ -108,7 +108,6 @@ size_flags_horizontal = 0
 size_flags_vertical = 8
 
 [node name="CharmModal" parent="." instance=ExtResource("2_vtcwb")]
-visible = false
 
 [node name="ColorRect" type="ColorRect" parent="CharmModal"]
 layout_mode = 1
@@ -143,8 +142,6 @@ offset_bottom = 200.0
 scale = Vector2(3.41297, 2.87144)
 
 [node name="Container" type="VBoxContainer" parent="CharmModal/centerContainer"]
-custom_minimum_size = Vector2(300, 200)
-layout_direction = 1
 layout_mode = 2
 alignment = 1
 

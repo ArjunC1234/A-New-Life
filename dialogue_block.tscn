@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://cx4lnfapc2usl"]
+
+[ext_resource type="Script" path="res://DialogueBlock.gd" id="1_w235o"]
+
+[node name="DialogueBlock" type="Node"]
+script = ExtResource("1_w235o")

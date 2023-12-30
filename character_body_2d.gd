@@ -36,6 +36,7 @@ var doGravity = true
 var allowJump = true
 var allowMove = true
 var isJump = false
+var frozen = false
 var state = "falling"
 var fallPoint = position.y
 var doJumpSustain = false
@@ -43,78 +44,80 @@ var doWallJump = false
 var attacking = false
 
 func _physics_process(delta):
+
 	# Add the gravity.
 	updateHealth.emit(health)
-	if doGravity == true:
-		if not is_on_floor():
-			velocity.y += gravity * delta
+	if not frozen:
+		if doGravity == true:
+			if not is_on_floor():
+				velocity.y += gravity * delta
 
-	# Signal Jump
-	if allowJump == true:
-		jump()
-	
-	# Get the input direction and handle the movement/deceleration.
-	# As good practice, you should replace UI actions with custom gameplay actions.
-	var direction = Input.get_axis("left", "right")
-	if direction < 0:
-		sprite_2d.flip_h = true
-		attackFlip.emit(-1)
-	elif direction > 0:
-		sprite_2d.flip_h = false
-		attackFlip.emit(1)
-	if allowMove:
-		if direction:
-			if is_on_floor():
-				velocity.x = direction * SPEED
+		# Signal Jump
+		if allowJump == true:
+			jump()
+		
+		# Get the input direction and handle the movement/deceleration.
+		# As good practice, you should replace UI actions with custom gameplay actions.
+		var direction = Input.get_axis("left", "right")
+		if direction < 0:
+			sprite_2d.flip_h = true
+			attackFlip.emit(-1)
+		elif direction > 0:
+			sprite_2d.flip_h = false
+			attackFlip.emit(1)
+		if allowMove:
+			if direction:
+				if is_on_floor():
+					velocity.x = direction * SPEED
+				else:
+					velocity.x += direction * (SPEED/25)
+					if (abs(velocity.x)>SPEED):
+						if velocity.x < 0:
+							velocity.x = -SPEED
+						else:
+							velocity.x = SPEED
 			else:
-				velocity.x += direction * (SPEED/25)
-				if (abs(velocity.x)>SPEED):
-					if velocity.x < 0:
-						velocity.x = -SPEED
+				velocity.x = move_toward(velocity.x, 0, 80)
+		dash()
+		
+		if sprite_2d.animation == "land" and not sprite_2d.is_playing() and state == "falling":
+			state = "ground"
+		
+		if Input.is_action_just_pressed("space") and not attacking and attackTimer.is_stopped():
+			attacking = true
+			sprite_2d.animation = "attack"
+			attackTimer.start()
+		move_and_slide()
+		if not attacking:
+			if is_on_floor():
+				if state == "jumping":
+					velocity.y = 0
+					state = "falling"
+				if state == "falling":
+					if position.y - fallPoint > 300:
+						sprite_2d.animation = "land"
+						sprite_2d.play()
 					else:
-						velocity.x = SPEED
-		else:
-			velocity.x = move_toward(velocity.x, 0, 80)
-	dash()
-	
-	if sprite_2d.animation == "land" and not sprite_2d.is_playing() and state == "falling":
-		state = "ground"
-	
-	if Input.is_action_just_pressed("space") and not attacking and attackTimer.is_stopped():
-		attacking = true
-		sprite_2d.animation = "attack"
-		attackTimer.start()
-	move_and_slide()
-	if not attacking:
-		if is_on_floor():
+						state = "ground"
+				if state == "ground":
+					fallPoint = position.y
+					if velocity.x == 0:
+						sprite_2d.animation = "idle"
+						sprite_2d.play()
+					else:
+						sprite_2d.animation = "run"
+						sprite_2d.play()
+			else:
+				if velocity.y > 0:
+					if velocity.y == 90:
+						sprite_2d.animation = "wallSlide"
+					else:
+						sprite_2d.animation = "fall"
+					state = "falling"
 			if state == "jumping":
-				velocity.y = 0
-				state = "falling"
-			if state == "falling":
-				if position.y - fallPoint > 300:
-					sprite_2d.animation = "land"
-					sprite_2d.play()
-				else:
-					state = "ground"
-			if state == "ground":
+				sprite_2d.animation = "jump"
+				state = "jumping"
 				fallPoint = position.y
-				if velocity.x == 0:
-					sprite_2d.animation = "idle"
-					sprite_2d.play()
-				else:
-					sprite_2d.animation = "run"
-					sprite_2d.play()
-		else:
-			if velocity.y > 0:
-				if velocity.y == 90:
-					sprite_2d.animation = "wallSlide"
-				else:
-					sprite_2d.animation = "fall"
-				state = "falling"
-		if state == "jumping":
-			sprite_2d.animation = "jump"
-			state = "jumping"
-			fallPoint = position.y
 		
 	
 func checkRoll():
@@ -173,7 +176,8 @@ func jump():
 		#print(-jSusBaseVelocityIncrease * jSusTimer.time_left/jSusTimer.wait_time)
 		#velocity.y *= 1.17
 
-
+func isPlayer():
+	pass
 #set jump sustain timer to finished after timer is finished.
 func _on_jump_sustain_timer_timeout():
 	jSusTimerFinished = true
@@ -256,11 +260,9 @@ func _on_wall_jump_timer_timeout():
 
 func _on_rigid_body_2d_emit_new_location(pos):
 	position = pos
-	print(position)
 
 func take_damage(amount, vector, attackerNode):
-	if unfreeze.is_stopped() and not dashing:
-		print("player took ddamage")
+	if unfreeze.is_stopped() and not dashing and not frozen:
 		velocity = vector.normalized() * knockback
 		freezeCharacter()
 		unfreeze.start()
@@ -280,3 +282,13 @@ func _on_animated_sprite_2d_animation_finished():
 
 func _on_unfreeze_timeout():
 	unfreezeCharacter()
+
+
+func _on_dialogue_hud_started_dialogue_sequence():
+	frozen = true
+	sprite_2d.pause()
+
+
+func _on_dialogue_hud_finished_dialogue_sequence():
+	frozen = false
+	sprite_2d.play()

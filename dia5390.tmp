@@ -1,0 +1,72 @@
+[gd_scene load_steps=7 format=3 uid="uid://ca1a6faavbomj"]
+
+[ext_resource type="Script" path="res://Dialogue HUD.gd" id="1_3ci1m"]
+[ext_resource type="PackedScene" uid="uid://b3g3lhdogugcb" path="res://modal.tscn" id="2_qobt6"]
+
+[sub_resource type="Gradient" id="Gradient_6s76m"]
+colors = PackedColorArray(0, 0, 0, 0.537255, 0, 0, 0, 0.537255)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_72s2r"]
+gradient = SubResource("Gradient_6s76m")
+
+[sub_resource type="LabelSettings" id="LabelSettings_3mpmo"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_ywhry"]
+
+[node name="Dialogue HUD" type="CanvasLayer"]
+script = ExtResource("1_3ci1m")
+
+[node name="changeModal" type="Timer" parent="."]
+one_shot = true
+
+[node name="Modal" parent="." instance=ExtResource("2_qobt6")]
+offset_top = 344.0
+offset_bottom = 344.0
+scale = Vector2(1, 0.4)
+fadeLength = 0.5
+
+[node name="TextureRect" type="TextureRect" parent="Modal"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("GradientTexture1D_72s2r")
+
+[node name="ProfileImage" type="TextureRect" parent="Modal"]
+layout_mode = 0
+offset_left = 20.0
+offset_top = 50.0
+offset_right = 60.0
+offset_bottom = 90.0
+scale = Vector2(4.04, 11.8)
+expand_mode = 5
+stretch_mode = 5
+
+[node name="CenterContainer" type="CenterContainer" parent="Modal"]
+layout_mode = 0
+offset_left = 210.0
+offset_top = 60.0
+offset_right = 250.0
+offset_bottom = 110.0
+scale = Vector2(19.8561, 8.90374)
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Modal/CenterContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="Author" type="Label" parent="Modal/CenterContainer/VBoxContainer"]
+custom_minimum_size = Vector2(40, 5)
+layout_mode = 2
+label_settings = SubResource("LabelSettings_3mpmo")
+
+[node name="Message" type="Label" parent="Modal/CenterContainer/VBoxContainer"]
+custom_minimum_size = Vector2(40, 10)
+layout_mode = 2
+label_settings = SubResource("LabelSettings_ywhry")
+autowrap_mode = 3
+
+[connection signal="timeout" from="changeModal" to="." method="_on_change_modal_timeout"]
+[connection signal="finished_fading_in" from="Modal" to="." method="_on_modal_finished_fading_in"]
+[connection signal="finished_fading_out" from="Modal" to="." method="_on_modal_finished_fading_out"]

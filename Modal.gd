@@ -1,9 +1,10 @@
 extends Control
 
-
+signal finished_fading_out
+signal finished_fading_in
 
 @export var isVisible = false
-@export var fadeLength = 1
+@export var fadeLength = 1.0
 @onready var fadeTimer = $fade
 
 var fadingIn = false
@@ -38,7 +39,9 @@ func _on_fade_timeout():
 	if fadingIn and not fadingOut:
 		fadingIn = false
 		isVisible = true
+		finished_fading_in.emit()
 	elif fadingOut and not fadingIn:
 		isVisible = false
 		visible = false
 		fadingOut = false
+		finished_fading_out.emit()

@@ -1,0 +1,93 @@
+[gd_scene load_steps=7 format=3 uid="uid://ca1a6faavbomj"]
+
+[ext_resource type="Script" path="res://Dialogue HUD.gd" id="1_3ci1m"]
+[ext_resource type="PackedScene" uid="uid://b3g3lhdogugcb" path="res://modal.tscn" id="2_qobt6"]
+
+[sub_resource type="Gradient" id="Gradient_6s76m"]
+colors = PackedColorArray(0, 0, 0, 0.839216, 0, 0, 0, 0.839216)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_72s2r"]
+gradient = SubResource("Gradient_6s76m")
+
+[sub_resource type="LabelSettings" id="LabelSettings_3mpmo"]
+font_size = 50
+shadow_size = 2
+shadow_color = Color(0, 0, 0, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_ywhry"]
+font_size = 25
+
+[node name="Dialogue HUD" type="CanvasLayer"]
+script = ExtResource("1_3ci1m")
+
+[node name="changeModal" type="Timer" parent="."]
+one_shot = true
+
+[node name="Modal" parent="." instance=ExtResource("2_qobt6")]
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+offset_left = -512.0
+offset_top = -187.0
+offset_right = 513.0
+offset_bottom = 275.0
+grow_vertical = 0
+scale = Vector2(0.999838, 0.404642)
+fadeLength = 0.5
+
+[node name="TextureRect" type="TextureRect" parent="Modal"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("GradientTexture1D_72s2r")
+
+[node name="ProfileImage" type="TextureRect" parent="Modal"]
+layout_mode = 0
+offset_left = 20.0
+offset_top = 52.0
+offset_right = 58.0
+offset_bottom = 83.0
+scale = Vector2(4.04, 11.8)
+expand_mode = 3
+stretch_mode = 5
+
+[node name="CenterContainer" type="CenterContainer" parent="Modal"]
+layout_direction = 2
+layout_mode = 0
+offset_left = 187.0
+offset_top = 72.0
+offset_right = 1007.0
+offset_bottom = 233.0
+scale = Vector2(1, 2)
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Modal/CenterContainer"]
+clip_contents = true
+custom_minimum_size = Vector2(500, 0)
+layout_direction = 2
+layout_mode = 2
+size_flags_stretch_ratio = 0.1
+alignment = 1
+
+[node name="Author" type="Label" parent="Modal/CenterContainer/VBoxContainer"]
+custom_minimum_size = Vector2(700, 0)
+layout_direction = 2
+layout_mode = 2
+size_flags_horizontal = 4
+text = "sdf"
+label_settings = SubResource("LabelSettings_3mpmo")
+text_direction = 1
+
+[node name="Message" type="Label" parent="Modal/CenterContainer/VBoxContainer"]
+custom_minimum_size = Vector2(700, 0)
+layout_mode = 2
+size_flags_vertical = 6
+label_settings = SubResource("LabelSettings_ywhry")
+autowrap_mode = 3
+
+[connection signal="timeout" from="changeModal" to="." method="_on_change_modal_timeout"]
+[connection signal="finished_fading_in" from="Modal" to="." method="_on_modal_finished_fading_in"]
+[connection signal="finished_fading_out" from="Modal" to="." method="_on_modal_finished_fading_out"]
