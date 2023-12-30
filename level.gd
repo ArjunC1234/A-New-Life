@@ -19,3 +19,7 @@ func _on_next_level_teleport_body_entered(body):
 	print("ffff")
 	if body.name == "CharacterBody2D":
 		loadTheNextLevel()
+
+
+func _on_event_timer_timeout():
+	pass # Replace with function body.

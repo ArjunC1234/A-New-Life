@@ -6,4 +6,7 @@
 
 [node name="Level" parent="." instance=ExtResource("1_ypsfj")]
 
+[node name="Camera2D" parent="Level" index="12"]
+DefualtTargetNodepath = NodePath("../CharacterBody2D")
+
 [editable path="Level"]

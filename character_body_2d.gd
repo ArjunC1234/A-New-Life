@@ -46,7 +46,7 @@ var fallPoint = position.y
 var doJumpSustain = false
 
 #CharmAbilityBooleans
-var allowBallRoll = false
+var becomeHuman = false
 var allowJumpSustain = false
 var allowAttack = false
 var allowWallJump = false
@@ -131,7 +131,7 @@ func _physics_process(delta):
 					state = "jumping"
 					fallPoint = position.y
 		
-	
+'''	
 func checkRoll():
 	if Input.is_action_pressed("space"):
 		rollStarted.emit(position)
@@ -144,6 +144,7 @@ func checkRoll():
 		unfreezeCharacter()
 		sprite_2d.visible = true
 		collisionShape.disabled = false
+'''
 	#Jump Logic
 func jump():
 	if Input.is_action_just_pressed("up") and is_on_floor():
@@ -207,7 +208,10 @@ func save_checkpoint(checkpoint):
 func updateCharms(charm):
 	charms.append(charm)
 	if charm.name == "Charm of the Spirit":
-		allowBallRoll = true
+		becomeHuman = true
+		collisionShape.disabled = false
+		sprite_2d.visible = true
+		unfreezeCharacter()
 	if charm.name == "Charm of Ascension":
 		allowJumpSustain = true
 	if charm.name == "Charm of Attack":
@@ -233,6 +237,7 @@ func unfreezeCharacter():
 	
 	
 	
+	
 
 
 #Dash
@@ -241,33 +246,34 @@ var canDash = false
 var dashing = false
 	
 func dash():
-	if is_on_floor() and dashDelay.is_stopped():
-		if dashing == false:
-			canDash = true
-		
-	if is_on_wall() and dashing:
-		dashing = false
-		unfreezeCharacter()
-		velocity = dashDirection.normalized() * 100
-		
-	if Input.is_action_pressed("right"):
-		dashDirection = Vector2(1,0)
-		
-	if Input.is_action_pressed("left"):
-		dashDirection = Vector2(-1,0)
-		
-	if Input.is_action_just_pressed("dash"):
-		if canDash == true and not attacking:
-			print("dashing")
-			sprite_2d.animation = "dash"
-			canDash = false
-			dashing = true
-			freezeCharacter()
-			dashDelay.start()
+	if allowDash == true:
+		if is_on_floor() and dashDelay.is_stopped():
+			if dashing == false:
+				canDash = true
 			
+		if is_on_wall() and dashing:
+			dashing = false
+			unfreezeCharacter()
+			velocity = dashDirection.normalized() * 100
 			
-	if dashing:
-		create_dash_echos()
+		if Input.is_action_pressed("right"):
+			dashDirection = Vector2(1,0)
+			
+		if Input.is_action_pressed("left"):
+			dashDirection = Vector2(-1,0)
+			
+		if Input.is_action_just_pressed("dash"):
+			if canDash == true and not attacking:
+				print("dashing")
+				sprite_2d.animation = "dash"
+				canDash = false
+				dashing = true
+				freezeCharacter()
+				dashDelay.start()
+				
+				
+		if dashing:
+			create_dash_echos()
 	
 func _on_dash_delay_timeout():
 	pass # Replace with function body.
@@ -343,4 +349,8 @@ func _on_dialogue_hud_finished_dialogue_sequence():
 	frozen = false
 	sprite_2d.play()
 
+func _ready():
+	if becomeHuman == false:
+		sprite_2d.visible = false
+		freezeCharacter()
 
