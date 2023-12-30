@@ -2,7 +2,7 @@ extends Node2D
 
 @onready var levelSwitcher = $LevelSwitcher
 signal BackToMainMenu
-var currentLevel = 0
+var currentLevel = 1
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	pass
