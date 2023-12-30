@@ -1798,7 +1798,7 @@ shadow_color = Color(0.00392157, 0.0196078, 0.00392157, 1)
 shadow_filter = 2
 
 [node name="CharacterBody2D" parent="." groups=["Entities"] instance=ExtResource("3_ewoaa")]
-position = Vector2(660, -81)
+position = Vector2(660, -165)
 scale = Vector2(3, 3)
 
 [node name="Camera2D" type="Camera2D" parent="CharacterBody2D"]

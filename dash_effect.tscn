@@ -1,0 +1,10 @@
+[gd_scene load_steps=3 format=3 uid="uid://cnneq2we1wbof"]
+
+[ext_resource type="Texture2D" uid="uid://deopr3d87ig0y" path="res://assets2/player/stone_player_echo.png" id="1_it4wd"]
+[ext_resource type="Script" path="res://dashEffect.gd" id="2_hlnm7"]
+
+[node name="dashEffect" type="Sprite2D"]
+z_as_relative = false
+scale = Vector2(0.1, 0.1)
+texture = ExtResource("1_it4wd")
+script = ExtResource("2_hlnm7")
