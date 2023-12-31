@@ -10,7 +10,7 @@ var allowMovement = false
 var actionIndex = 0
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	timer.start(1)
+	timer.start(4)
 	print("timerstarted")
 
 func _on_event_timer_timeout():
@@ -22,7 +22,7 @@ func _on_event_timer_timeout():
 		print("woah")
 		sprite_2d.animation = "wake_up"
 		actionIndex += 1
-		timer.start(2)
+		timer.start(9)
 
 
 func _process(delta):

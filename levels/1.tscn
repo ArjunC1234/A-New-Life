@@ -3,7 +3,7 @@
 [ext_resource type="PackedScene" uid="uid://eqvhnd8qxoyj" path="res://level.tscn" id="1_fd8on"]
 [ext_resource type="PackedScene" uid="uid://ben7qxn610l62" path="res://torch.tscn" id="3_lvyl1"]
 [ext_resource type="PackedScene" uid="uid://0v2lspotbsga" path="res://coin.tscn" id="3_v7d2w"]
-[ext_resource type="PackedScene" uid="uid://ddq21e3xghmc8" path="res://base_rock.tscn" id="4_b4rf8"]
+[ext_resource type="PackedScene" path="res://base_rock.tscn" id="4_b4rf8"]
 [ext_resource type="PackedScene" uid="uid://i72v416s203u" path="res://next_level_teleport.tscn" id="5_fybkn"]
 
 [node name="1" type="Node"]
@@ -93,9 +93,6 @@ position = Vector2(2046, 891)
 [node name="NextLevelTeleport" parent="." instance=ExtResource("5_fybkn")]
 position = Vector2(1971, 873)
 
-[connection signal="addCharmsToHUD" from="Level/CharacterBody2D" to="Level/HUD" method="_on_character_body_2d_add_charms_to_hud"]
-[connection signal="coinChange" from="Level/CharacterBody2D" to="Level/HUD" method="_on_character_body_2d_coin_change"]
-[connection signal="updateHealth" from="Level/CharacterBody2D" to="Level/HUD" method="_on_character_body_2d_update_health"]
 [connection signal="body_entered" from="NextLevelTeleport" to="Level" method="_on_next_level_teleport_body_entered"]
 
 [editable path="Level"]

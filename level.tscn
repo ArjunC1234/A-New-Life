@@ -3685,7 +3685,6 @@ process_priority = 1
 
 [node name="Dialogue HUD" parent="." instance=ExtResource("8_fse7q")]
 
-
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2(26, 43)
 scale = Vector2(0.999999, 0.999999)
@@ -3702,4 +3701,3 @@ script = ExtResource("10_v145f")
 [connection signal="updateHealth" from="CharacterBody2D" to="HUD" method="_on_character_body_2d_update_health"]
 [connection signal="finishedDialogueSequence" from="Dialogue HUD" to="CharacterBody2D" method="_on_dialogue_hud_finished_dialogue_sequence"]
 [connection signal="startedDialogueSequence" from="Dialogue HUD" to="CharacterBody2D" method="_on_dialogue_hud_started_dialogue_sequence"]
-

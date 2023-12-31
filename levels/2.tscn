@@ -52,6 +52,9 @@ include = true
 [node name="CanvasModulate" parent="Level" index="9"]
 color = Color(0.454902, 0.388235, 0.439216, 1)
 
+[node name="Camera2D" parent="Level" index="12"]
+DefualtTargetNodepath = NodePath("../CharacterBody2D")
+
 [node name="Coin" parent="Level" instance=ExtResource("2_g265x")]
 position = Vector2(1604, 755)
 
@@ -249,96 +252,82 @@ damage = 2
 [node name="Torch" parent="Level" instance=ExtResource("2_iju62")]
 position = Vector2(1746, 575)
 rotation = 0.55676
-scale = Vector2(0.09, 0.09)
 enable_shadows = true
 collidable = false
 
 [node name="Torch2" parent="Level" instance=ExtResource("2_iju62")]
 position = Vector2(1614, 576)
 rotation = -0.55676
-scale = Vector2(0.09, 0.09)
 enable_shadows = true
 collidable = false
 
 [node name="Torch3" parent="Level" instance=ExtResource("2_iju62")]
 position = Vector2(2956, 862)
 rotation = -0.55676
-scale = Vector2(0.09, 0.09)
 enable_shadows = true
 collidable = false
 
 [node name="Torch4" parent="Level" instance=ExtResource("2_iju62")]
 position = Vector2(3090, 861)
 rotation = 0.55676
-scale = Vector2(0.09, 0.09)
 enable_shadows = true
 collidable = false
 
 [node name="Torch5" parent="Level" instance=ExtResource("2_iju62")]
 position = Vector2(3263, 2077)
-scale = Vector2(0.09, 0.09)
 enable_shadows = true
 collidable = false
 
 [node name="Torch6" parent="Level" instance=ExtResource("2_iju62")]
 position = Vector2(2651, 2059)
 rotation = 0.55676
-scale = Vector2(0.09, 0.09)
 enable_shadows = true
 collidable = false
 
 [node name="Torch7" parent="Level" instance=ExtResource("2_iju62")]
 position = Vector2(4975, 1482)
 rotation = -0.55676
-scale = Vector2(0.09, 0.09)
 enable_shadows = true
 collidable = false
 
 [node name="Torch14" parent="Level" instance=ExtResource("2_iju62")]
 position = Vector2(5449, 1503)
-scale = Vector2(0.09, 0.09)
 enable_shadows = true
 collidable = false
 
 [node name="Torch8" parent="Level" instance=ExtResource("2_iju62")]
 position = Vector2(4239, 1314)
 rotation = 0.55676
-scale = Vector2(0.09, 0.09)
 enable_shadows = true
 collidable = false
 
 [node name="Torch9" parent="Level" instance=ExtResource("2_iju62")]
 position = Vector2(4672, 952)
 rotation = 0.55676
-scale = Vector2(0.09, 0.09)
 enable_shadows = true
 collidable = false
 
 [node name="Torch10" parent="Level" instance=ExtResource("2_iju62")]
 position = Vector2(5056, 641)
 rotation = 0.55676
-scale = Vector2(0.09, 0.09)
 enable_shadows = true
 collidable = false
 
 [node name="Torch11" parent="Level" instance=ExtResource("2_iju62")]
 position = Vector2(5394, 698)
 rotation = 0.55676
-scale = Vector2(0.09, 0.09)
 enable_shadows = true
 collidable = false
 
 [node name="Torch12" parent="Level" instance=ExtResource("2_iju62")]
 position = Vector2(5211, 697)
 rotation = -0.55676
-scale = Vector2(0.09, 0.09)
 enable_shadows = true
 collidable = false
 
 [node name="Torch13" parent="Level" instance=ExtResource("2_iju62")]
 position = Vector2(4878, 646)
 rotation = -0.55676
-scale = Vector2(0.09, 0.09)
 enable_shadows = true
 collidable = false
 
